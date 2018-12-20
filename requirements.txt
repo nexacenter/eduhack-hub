@@ -2,3 +2,5 @@ jinja2
 bs4
 html5lib
 requests
+sqlalchemy
+flask
