@@ -16,6 +16,20 @@
 		    <div class="card-body"> 
 		     <h4 class="card-title">{{ p['title'] }}</h4> 
 		     <p class="card-text">by {{ p['author'] }}</p>
+                     {% if p['tags'].__len__() > 0 %}
+			     <p class="card-text">tags:
+                             {% for t in p['tags'] %}
+				 <a href="http://example.com/{{ t }}"> {{ t }} </a>
+                             {% endfor %}
+			     </p>
+		     {% endif %}
+                     {% if p['categories'].__len__() > 0 %}
+			     <p class="card-text">categories:
+                             {% for t in p['categories'] %}
+				 <a href="http://example.com/{{ t }}"> {{ t }} </a>
+                             {% endfor %}
+			     </p>
+		     {% endif %}
 		    </div> 
 	    </div> 
           {% endfor %}
