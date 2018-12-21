@@ -99,14 +99,6 @@ def get_posts(url):
        #posts.append(res)
     #return posts
             
-def render_template(lst):
-    with open('template.html', 'r') as fp: 
-        st = fp.read() 
-    template = Environment(loader=BaseLoader).from_string(st) 
-    result = template.render({'posts': lst})
-    with open("index.html", "w") as fp:
-        fp.write(result)
-
 def add_author_todb(name, link, session=None):
     author = session.query(Author).filter(Author.name == name).first()
     if author:
@@ -162,5 +154,3 @@ if __name__ == '__main__':
     for b in get_blog_list():
         for post in get_posts(b):
             add_to_db(post)
-    #render_template(all)
-     
