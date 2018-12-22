@@ -329,34 +329,14 @@ font-family: "Quicksand", "Helvetica Neue", Helvetica, Arial, sans-serif !import
 </div>
 {% endif %}
 
-<form action="submit" method="POST" role="form" class="form-horizontal">
+<form action="remove_title" method="POST" role="form" class="form-horizontal">
   <div class="form-group">
-    <label for="author">Author name:</label>
-    <input type="author" class="form-control" name="author">
+    <label for="link">Post link:</label>
+    <input type="link" class="form-control" name="link">
   </div>
   <div class="form-group">
-    <label for="link">Link to your post:</label>
-    <input name="link" type="link" class="form-control">
-  </div>
-  <div class="form-group">
-    <label for="link">Link to your blog:</label>
-    <input name="blogurl" type="link" class="form-control">
-  </div>
-  <div class="form-group">
-    <label for="link">Link to post image:</label>
-    <input name="thumb" type="thumb" class="form-control">
-  </div>
-  <div class="form-group">
-    <label for="title">Title:</label>
-    <input name="title" type="title" class="form-control">
-  </div>
-  <div class="form-group">
-    <label for="categories">Categories (comma divided):</label>
-    <input name="categories" type="categories" class="form-control">
-  </div>
-  <div class="form-group">
-    <label for="tags">Tags (comma divided):</label>
-    <input name="tags" type="tags" class="form-control">
+    <label for="title">Post title:</label>
+    <input type="title" class="form-control" name="title">
   </div>
   <button type="submit" class="btn btn-default">Submit</button>
 </form> 

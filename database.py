@@ -1,6 +1,7 @@
 import os
 import sys
 from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
@@ -44,7 +45,7 @@ engine = create_engine('sqlite:///' + DB)
  
 # Create all tables in the engine. This is equivalent to "Create Table"
 # statements in raw SQL.
-if not os.path.isfile(DB):
-    Base.metadata.create_all(engine)
+if not database_exists(engine.url):
+    create_database(engine.url)
  
 Session = sessionmaker(bind=engine)

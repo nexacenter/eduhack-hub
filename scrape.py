@@ -131,7 +131,26 @@ def add_cat_post_rel_todb(c=None, p=None, type=None, session=None):
     session.add(rel)
     return rel
 
+def should_ignore(domain=None, url=None):
+    assert domain is not None and url is not None
+    domains = set()
+    urls = set()
+    with open('domains_blacklist', 'r') as f:
+        domains = set([l.strip() for l in f.readlines()]) 
+    with open('urls_blacklist', 'r') as f:
+        urls = set([l.strip() for l in f.readlines()]) 
+    for var in ['', 'http://', 'https://']:
+        if var + url in urls:
+             return True
+        if var + domain in domains:
+             return True
+    return False
+
 def add_to_db(post):
+        link = post['link'] 
+        domain = post['blogurl']
+        if should_ignore(domain=domain, url=link):
+            return
         session = Session()
         if already_in_db(post, session=session):
             return
@@ -146,8 +165,6 @@ def add_to_db(post):
             add_cat_post_rel_todb(c=c, p=postTable, type='Tag', session=session)
         logging.info('Added to db: ' + post['title'])
         session.commit()
-            
-        
 
 if __name__ == '__main__':
     all = list()
