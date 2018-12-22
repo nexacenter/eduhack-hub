@@ -50,7 +50,7 @@ def index_page(index):
     session = Session()
     query = 'select * from author, post  where post.authorid = author.id and post.id > %s order by post.id DESC limit 10;' % index
     posts = [make_post(p, session) for p in session.execute(query).fetchall()] # could have been done using sql, don't care
-    return render_template('template.html', posts= posts, index=index)
+    return render_template('index.html', posts= posts, index=index)
 
 @app.route('/')
 def index():

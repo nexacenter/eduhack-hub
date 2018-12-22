@@ -195,7 +195,7 @@ font-family: "Quicksand", "Helvetica Neue", Helvetica, Arial, sans-serif !import
 				<ul class="main-menu fright">
 					
 					<li id="menu-item-46" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-46"><a href="https://eduhack.eu/wall/">Home</a></li>
-<li id="menu-item-51" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-51"><a href="https://eduhack.eu/wall/write/">Submit a link</a></li>
+<li id="menu-item-51" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-51"><a href="/submit">Submit a link</a></li>
 <li id="menu-item-87" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-has-children menu-item-87"><a href="https://eduhack.eu/wall/">Course</a>
 <ul class="sub-menu">
 	<li id="menu-item-53" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-53"><a href="https://eduhack.eu/wall/category/published/area1/">Digital Resources</a>
@@ -316,41 +316,9 @@ font-family: "Quicksand", "Helvetica Neue", Helvetica, Arial, sans-serif !import
 			 
 		</div> <!-- /mobile-menu-container -->
 
-<div class="container-fluid">
-  <!-- Start of Card Columns Layout --> 
-  <div class="card-columns"> 
-	  {% for p in posts %}
-	   <div class="card"> 
-                     {% if p['thumb'] != '' %}
-			    <img class="card-img-top img-fluid" src="{{ p['thumb'] }}" /> 
-		     {% endif %}
-		    <div class="card-body"> 
-		     <h4 class="card-title"><a href="{{ p['link'] }}"><b>{{ p['title'] }}</b></a></h4> 
-		     <p class="card-text">by {{ p['author'] }}</p>
-                     {% if p['tags'].__len__() > 0 %}
-                             <p class="card-text">tags:
-                             {% for t in p['tags'] %}
-                                 <a href="http://example.com/{{ t }}"> {{ t }} </a>
-                             {% endfor %}
-                             </p>
-                     {% endif %}
-                     {% if p['categories'].__len__() > 0 %}
-                             <p class="card-text">categories:
-                             {% for t in p['categories'] %}
-                                 <a href="http://example.com/{{ t }}"> {{ t }} </a>
-                             {% endfor %}
-                             </p>
-                     {% endif %}
-		    </div> 
-	    </div> 
-          {% endfor %}
-  </div> 
-  <!-- End of Card Columns Layout --> 
-          {% if index > 0 %}
-          <a class="label label-arrow" href="/{{ index -1 }}"> Next posts </a>
-          {% endif %}
-          <a href="/{{ index -1 }}"> Previous posts </a>
-</div> 
+{% block content %}
+
+{% endblock %}
 	<div class="footer section medium-padding bg-graphite">
 			
 		<div class="section-inner row">
@@ -392,9 +360,18 @@ font-family: "Quicksand", "Helvetica Neue", Helvetica, Arial, sans-serif !import
 					
 				</div>
 				
-			 <!-- /footer-b -->
-								
-			 <!-- /footer-c -->
+				<div class="column column-3 one-third">
+				
+					<div class="widgets">
+			
+						<div class="widget widget_text"><div class="widget-content">			<div class="imagewidget">
+ <img src="https://eduhack.eu/wp-content/uploads/2018/02/eu_flag_co_funded_pos_rgb_left11-300x86.jpg" alt="Italian Trulli">
+
+</div>
+		</div><div class="clear"></div></div>											
+					</div> <!-- /widgets -->
+					
+				</div>
 			
 			<div class="clear"></div>
 		

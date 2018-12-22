@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+  <!-- Start of Card Columns Layout --> 
+  <div class="card-columns"> 
+	  {% for p in posts %}
+	   <div class="card"> 
+                     {% if p['thumb'] != '' %}
+			    <img class="card-img-top img-fluid" src="{{ p['thumb'] }}" /> 
+		     {% endif %}
+		    <div class="card-body"> 
+		     <h4 class="card-title"><a href="{{ p['link'] }}"><b>{{ p['title'] }}</b></a></h4> 
+		     <p class="card-text">by {{ p['author'] }}</p>
+                     {% if p['tags'].__len__() > 0 %}
+                             <p class="card-text">tags:
+                             {% for t in p['tags'] %}
+                                 <a href="http://example.com/{{ t }}"> {{ t }} </a>
+                             {% endfor %}
+                             </p>
+                     {% endif %}
+                     {% if p['categories'].__len__() > 0 %}
+                             <p class="card-text">categories:
+                             {% for t in p['categories'] %}
+                                 <a href="http://example.com/{{ t }}"> {{ t }} </a>
+                             {% endfor %}
+                             </p>
+                     {% endif %}
+		    </div> 
+	    </div> 
+          {% endfor %}
+  </div> 
+  <!-- End of Card Columns Layout --> 
+          {% if index > 0 %}
+          <a class="label label-arrow" href="/{{ index -1 }}"> Next posts </a>
+          {% endif %}
+          <a href="/{{ index -1 }}"> Previous posts </a>
+</div> 
+{% endblock %}
