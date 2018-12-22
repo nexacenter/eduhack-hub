@@ -5,6 +5,7 @@ from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
+import config as CONFIG
  
 Base = declarative_base()
  
@@ -40,8 +41,7 @@ class PostHasCategory(Base):
     post = relationship(Post)
     type = Column(String(64), nullable=False)
 
-DB = 'edu.db'
-engine = create_engine('sqlite:///' + DB)
+engine = create_engine('sqlite:///' + CONFIG.db)
  
 # Create all tables in the engine. This is equivalent to "Create Table"
 # statements in raw SQL.

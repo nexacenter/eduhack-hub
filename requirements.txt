@@ -3,4 +3,6 @@ bs4
 html5lib
 requests
 sqlalchemy
+sqlalchemy_utils
 flask
+flask-login
