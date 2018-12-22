@@ -41,10 +41,8 @@ class PostHasCategory(Base):
     post = relationship(Post)
     type = Column(String(64), nullable=False)
 
-engine = create_engine('sqlite:///' + CONFIG.db)
+engine = create_engine(CONFIG.db)
  
-# Create all tables in the engine. This is equivalent to "Create Table"
-# statements in raw SQL.
 if not database_exists(engine.url):
     create_database(engine.url)
  

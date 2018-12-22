@@ -5,6 +5,7 @@ from jinja2 import BaseLoader, Template, Environment
 import logging
 logging.basicConfig(level=logging.DEBUG)
 from database import *
+import config as CONFIG
 
 import IPython
 fuck = IPython.embed
@@ -15,7 +16,7 @@ def get_blog_list():
     sites = 'https://eduhack.eu/wp-admin/network/sites.php'
     login = 'https://eduhack.eu/wp-login.php'
 
-    s.post(login, data={'log': 'me@francescomecca.eu', 'pwd':'provaprova2'})
+    s.post(login, data={'log': CONFIG.email, 'pwd':CONFIG.wp_pwd})
     sitesHtml = s.get(sites).text
 
     b = BeautifulSoup(sitesHtml, features='lxml')
@@ -140,6 +141,7 @@ def should_ignore(domain=None, url=None):
     with open('urls_blacklist', 'r') as f:
         urls = set([l.strip() for l in f.readlines()]) 
     for var in ['', 'http://', 'https://']:
+        # check multiple combinations
         if var + url in urls:
              return True
         if var + domain in domains:
@@ -147,24 +149,29 @@ def should_ignore(domain=None, url=None):
     return False
 
 def add_to_db(post):
-        link = post['link'] 
-        domain = post['blogurl']
-        if should_ignore(domain=domain, url=link):
-            return
-        session = Session()
-        if already_in_db(post, session=session):
-            return
-        author = post['author']
-        authorTable = add_author_todb(author, post['blogurl'], session=session) # table is wrong naming
-        postTable = add_post_todb(post, authorTable, session=session)
-        for cat in post['categories']:
-            c = add_category_todb(cat, type='Categories', session=session)
-            add_cat_post_rel_todb(c=c, p=postTable, type='Category', session=session)
-        for tag in post['tags']: # horrible
-            c = add_category_todb(tag, type='Tag', session=session)
-            add_cat_post_rel_todb(c=c, p=postTable, type='Tag', session=session)
-        logging.info('Added to db: ' + post['title'])
-        session.commit()
+    '''
+    Generate different database objects from a dictionary
+    and populate the DB
+    If already in db, return
+    '''
+    link = post['link'] 
+    domain = post['blogurl']
+    if should_ignore(domain=domain, url=link):
+        return
+    session = Session()
+    if already_in_db(post, session=session):
+        return
+    author = post['author']
+    authorTable = add_author_todb(author, post['blogurl'], session=session) # table is wrong naming
+    postTable = add_post_todb(post, authorTable, session=session)
+    for cat in post['categories']:
+        c = add_category_todb(cat, type='Categories', session=session)
+        add_cat_post_rel_todb(c=c, p=postTable, type='Category', session=session)
+    for tag in post['tags']: # horrible
+        c = add_category_todb(tag, type='Tag', session=session)
+        add_cat_post_rel_todb(c=c, p=postTable, type='Tag', session=session)
+    logging.info('Added to db: ' + post['title'])
+    session.commit()
 
 if __name__ == '__main__':
     all = list()

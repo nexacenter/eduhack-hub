@@ -1,7 +1,6 @@
 from database import *
 import config as CONFIG
 
-
 from flask import Flask, render_template, request, url_for
 import flask
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required, UserMixin
@@ -46,6 +45,7 @@ def admin():
     
 @app.route('/<int:index>')
 def index_page(index): 
+    index = int(index) # shitty sql inj avoidance
     index = index if index >= 0 else 0
     session = Session()
     query = 'select * from author, post  where post.authorid = author.id and post.id > %s order by post.id DESC limit 10;' % index
@@ -63,7 +63,6 @@ def is_valid_img(path):
     return r.status_code == requests.codes.ok
 
 def validate(form):
-   print(form)
    error = ''
    if form['link'] == '' and len(form['link']) < 5 and not 'http' in form['link'][:4]:
        error = 'Insert a valid link for your post'
@@ -76,7 +75,6 @@ def validate(form):
    if form['blogurl'] == '' and len(form['blogurl']) < 5 and not 'http' in form['blogurl'][:4]:
       error = 'Please insert a valid link for your blog'
    # very weak checks
-
    return error
 
 def save_in_db(form):
@@ -104,10 +102,14 @@ def submit():
         if error == '':
             save_in_db(request.form)
             success='Thank you for submitting your post.'
-
     return render_template('submit.html', error=error, success=success)
 
 def make_post(post, session):
+    '''
+    Could have done a join,
+    instead make other two queries to the db
+    and build a dictionary that represents a post
+    '''
     p = {}
     catq = 'select c.name cname, c.type type from  posthascategory pc, category c  where pc.cid = c.id and pc.pid = %s and pc.type = "Category";' %post.id  
     tagq= 'select c.name cname, c.type type from  posthascategory pc, category c  where pc.cid = c.id and pc.pid = %s and pc.type = "Tag";' %post.id 
@@ -148,6 +150,7 @@ def remove_title():
     return render_template('remove_title.html', error=error, success=success)
 
 @app.route('/filter', methods=['GET', 'POST'])
+# very bad naming
 def filter_uurl():
     success = ''
     error = ''
@@ -189,10 +192,9 @@ def filter_uurl():
                   with open('urls_blacklist', 'w') as f:
                       for d in urls:
                           f.write("%s\n" %d)
-                  
 
        success = 'Action completed.'
-    print(urls, domains, success)
+
     return render_template('filter_url.html', error=error, success=success, urls=enumerate(urls), domains=enumerate(domains))
     
 
