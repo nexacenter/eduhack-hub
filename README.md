@@ -2,7 +2,7 @@ L'hub per eduhack e` composto da un applicativo in flask e da uno scraper da sch
 Tutte le funzioni non commentate sono ovvie.
 La configurazione e` contenuta in config.py.
 
-### Flask
+# Flask
 
 L'applicativo di flask usa parti dello scraper come libreria.
 L'applicativo dipende da sqlalchemy e jinja, un manager per i login e requests per validare le immagini.
@@ -26,7 +26,7 @@ Header, includes e footer sono definite in base.html. E` uno schifo totale copia
 Consiglio di girare flask usando gunicorn e nginx come reverse proxy. Mysql (o meglio) per evitare i malditesta per le scritture concorrenti di sqlite.
 
 
-### Scraper
+# Scraper
 
 Lo scraper e` fatto utilizzando requests, beautifulsoup e sqlalchemy per scrivere su db.
 
@@ -36,9 +36,79 @@ Una volta ottenuta la lista dei blog da parsare vengono utilizzate le api di wor
 Gli endpoint utilizzati sono /posts, /users, /categories, /tags.
 Tutti le url o i domini (`blogurl`) contenute in `urls_blacklist` o `domains_blacklist` vengono ignorate.
 
+# Deploy
+
+### Gunicorn
+
+Gunicorn e` molto semplice da avviare:
+` gunicorn app:app -b localhost:8000 -w N `
+dove N sono il numero di workers e app si riferisce al modulo app.py della root directory del progetto.
+Gunicorn non logga gli errori di app.py ma lascia che l'output venga stampato. Si consiglia di ridirezionare stdout e stderr.
+
+### NGINX
+
+Nginx viene usato come reverse proxy.
+In caso si preferisca usare apache2 senza fare reverse_proxy bisogna configurare qualche mod per python e poi usare app.py come cgi.
+```
+server {
+    listen   80; # The default is 80 but this here if you want to change it.
+    server_name hub.eduhack.eu;
+    
+    location / {
+        proxy_pass              http://localhost:8000;
+        proxy_set_header        Host $host;
+        proxy_set_header        X-Real-IP $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_connect_timeout   150;
+        proxy_send_timeout      100;
+        proxy_read_timeout      100;
+        proxy_buffers           4 32k;
+        client_max_body_size    500m; # Big number is we can post big commits.
+        client_body_buffer_size 128k;
+    }
+}
+```
+
+Si puo` pensare a strategie di caching:
+
+```
+   location ~* \.(ico|css|js|jpg|png|)$ {
+       expires 1d;
+       access_log off;
+       add_header Pragma public;
+       add_header Cache-Control "public, max-age=86400";
+       add_header X-Asset "yes";
+   }
+```
+
+### Systemd
+
+Si suppone che al Nexa venga ancora usato systemd.
+Si devono sostituire le variabili chiaramente!
+
+```
+[Unit]
+Description=EduHack hub
+After=network.target
+
+[Service]
+Type=simple
+User=USER
+WorkingDirectory=/home/HOMEEEEE
+ExecStart=</PATH_TO_local/bin/>gunicorn  --options
+Restart=on-failure
+# oppure: or always, on-abort, etc
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### Scraper / cron
+Lo scraper va eseguito secondo un intervallo di tempo (esempio 30 minuti).
 ``` cron
 0,30 * * * * python3 /path/scrape.py > /logpath/scrape.log
 ```
+
 
 #### Considerazioni
 
