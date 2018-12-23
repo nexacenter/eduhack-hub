@@ -19,7 +19,7 @@ class Post(Base):
     __tablename__ = 'post'
     id = Column(Integer, primary_key=True)
     link = Column(String(256), nullable=False)
-    date = Column(String(256), nullable=False)
+    date = Column(DateTime, default=datetime.datetime.utcnow)
     title = Column(String(256), nullable=False)
     thumb = Column(String(256), nullable=False) # link to jetpack media thumb
     authorid = Column(Integer, ForeignKey('author.id'))
