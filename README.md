@@ -109,6 +109,17 @@ Lo scraper va eseguito secondo un intervallo di tempo (esempio 30 minuti).
 0,30 * * * * python3 /path/scrape.py > /logpath/scrape.log
 ```
 
+# File di configurazione
+
+In config.py sono contenuti vari parametri di configurazione.
+```
+password = 'prova' # il codice di autenticazione per accedere alle funzioni di amministrazione
+secret = '123upudnpomi8r2yn' # un secret code per flask, puo` essere generato casualmente e viene utilizzato per le sessioni
+db = 'sqlite:///edu.db' # URI del db per sqlalchemy. Considerare: "mysql+pymysql://user:passwd@localhost/nomedb",
+wp_pwd = 'provaprova2' # password per accedere a wordpress
+email = 'me@francescomecca.eu' # email da usare come username per wordpress
+do_not_list = ['test', 'admin', 'atester'] # blogs that should not displayed in /blogs
+```
 
 #### Considerazioni
 
