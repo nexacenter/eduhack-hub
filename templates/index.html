@@ -10,18 +10,18 @@
 		     {% endif %}
 		    <div class="card-body"> 
 		     <h4 class="card-title"><a href="{{ p['link'] }}"><b>{{ p['title'] }}</b></a></h4> 
-		     <p class="card-text">by {{ p['author'] }}</p>
+		     <p class="card-text">by <a href="{{ p['blogurl'] }}">{{ p['author'] }}</a></p>
                      {% if p['tags'].__len__() > 0 %}
                              <p class="card-text">tags:
-                             {% for t in p['tags'] %}
-                                 <a href="http://example.com/{{ t }}"> {{ t }} </a>
+                             {% for id, name in p['tags'] %}
+                                 <a href="/tag/{{ id }}"> {{ name }} </a>
                              {% endfor %}
                              </p>
                      {% endif %}
                      {% if p['categories'].__len__() > 0 %}
                              <p class="card-text">categories:
-                             {% for t in p['categories'] %}
-                                 <a href="http://example.com/{{ t }}"> {{ t }} </a>
+                             {% for id, name in p['categories'] %}
+                                 <a href="/categories/{{ id }}"> {{ name }} </a>
                              {% endfor %}
                              </p>
                      {% endif %}
@@ -30,9 +30,11 @@
           {% endfor %}
   </div> 
   <!-- End of Card Columns Layout --> 
-          {% if index > 0 %}
-          <a class="label label-arrow" href="/{{ index -1 }}"> Next posts </a>
+          {% if index is defined %}
+		  {% if index > 0 %}
+		  <a class="" href="/{{ index -1 }}"><i class="arrow left"></i> Next posts</a>
+		  {% endif %}
+		  <a href="/{{ index +1 }}"> Previous posts <i class="arrow right"></i> </a>
           {% endif %}
-          <a href="/{{ index -1 }}"> Previous posts </a>
 </div> 
 {% endblock %}

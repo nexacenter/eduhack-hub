@@ -1,5 +1,7 @@
 from database import *
 import config as CONFIG
+import IPython
+fuck = IPython.embed
 
 from flask import Flask, render_template, request, url_for
 import flask
@@ -58,7 +60,7 @@ def index_page(index):
     index = int(index) # shitty sql inj avoidance
     index = index if index >= 0 else 0
     session = Session()
-    query = 'select * from author, post  where post.authorid = author.id and post.id > %s order by post.id DESC limit 10;' % index
+    query = 'select *, author.link blogurl from author, post  where post.authorid = author.id and post.id > %s order by post.id DESC limit 10;' % index
     posts = [make_post(p, session) for p in session.execute(query).fetchall()] # could have been done using sql, don't care
     return render_template('index.html', posts= posts, index=index)
 
@@ -121,17 +123,67 @@ def make_post(post, session):
     and build a dictionary that represents a post
     '''
     p = {}
-    catq = 'select c.name cname, c.type type from  posthascategory pc, category c  where pc.cid = c.id and pc.pid = %s and pc.type = "Category";' %post.id  
-    tagq= 'select c.name cname, c.type type from  posthascategory pc, category c  where pc.cid = c.id and pc.pid = %s and pc.type = "Tag";' %post.id 
+    catq = 'select c.id cid, c.name cname, c.type type from  posthascategory pc, category c  where pc.cid = c.id and pc.pid = %s and pc.type = "Category";' %post.id  
+    tagq= 'select c.id cid, c.name cname, c.type type from  posthascategory pc, category c  where pc.cid = c.id and pc.pid = %s and pc.type = "Tag";' %post.id 
     tags = session.execute(tagq).fetchall()
     categories = session.execute(catq).fetchall()
     p['thumb'] = post.thumb
     p['title'] = post.title
     p['link'] = post.link
     p['author'] = post.name
-    p['tags'] = [t.cname for t in tags]
-    p['categories'] = [t.cname for t in categories]
+    p['blogurl'] = post.blogurl if 'http' == post.blogurl[:4] else 'http://' + post.blogurl
+    p['tags'] = [(t.cid, t.cname) for t in tags]
+    p['categories'] = [(t.cid, t.cname) for t in categories]
     return p
+
+def get_tag_cat(tagid, ttype):
+    '''
+    Commond code for getting posts tagged with tags or categories
+    '''
+    session = Session()
+    tagq= 'select p.id, c.name cname, c.type type from  posthascategory pc, category c, post p where pc.cid = c.id and pc.pid = p.id and pc.type = "%s" and c.id = %s;' % (ttype, tagid)
+    # here get only posts id.
+    # then gather every info needed from multiple queries
+    posts = session.execute(tagq).fetchall()
+    res = []
+    for p in posts:
+        query = 'select *, author.link blogurl from author, post  where post.authorid = author.id and post.id = %s;' % p.id
+        pa = session.execute(query).first() # could have been done using sql, don't care
+        res.append(make_post(pa, session))
+    return res
+
+@app.route('/tag/<int:tagid>')
+def get_tagged_posts(tagid):
+    '''
+    Given a tag id return all the posts that are tagged with that tag.
+    '''
+    tagid = 0 if tagid < 0 else int(tagid)
+    return render_template('index.html', posts=get_tag_cat(tagid, 'Tag'))
+    
+@app.route('/categories/<int:tagid>')
+def get_tagged_postsc(tagid):
+    '''
+    Given a tag id return all the posts that are tagged with that tag.
+    '''
+    tagid = 0 if tagid < 0 else int(tagid)
+    return render_template('index.html', posts=get_tag_cat(tagid, 'Category'))
+    
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    from sqlalchemy import func
+    posts = []
+    error = ''
+    if request.method == 'POST':
+       session = Session()
+       queries = request.form['search'].split(',')
+       for q in queries:
+           tag = session.query(Category).filter(func.lower(Category.name) == q.lower()).first()
+           if tag:
+               posts.extend(get_tag_cat(tag.id, tag.type))
+              
+       if len(posts) == 0:
+               error = 'Nothing found. Try to refine your query.'
+    return render_template('search.html', posts=posts, error=error)
 
 @app.route('/remove_title', methods=['GET', 'POST'])
 @login_required

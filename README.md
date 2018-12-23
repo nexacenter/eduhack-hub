@@ -13,6 +13,9 @@ Quasi ogni funzione definisce un endpoint:
 /index/<int>/, GET: indice paginato dei post. 10 post alla volta.
 /blogs/, GET: indice dei blog utenti, filtrati secondo config.py.
 /submit, GET and POST: form per postare un link di un blog esterno.
+/search, GET and POST: form per cercare posts per tags o categories
+/tag/<int>/, GET: ritorna i post con quel tagid.
+/categories/<int>/, GET: ritorna i post con quel categoriesid.
 /login GET and POST: serve per fare il login ed avere accesso agli endpoint successivi.
 
 /admin GET and POST, login richiesto: lista delle funzioni successive.
