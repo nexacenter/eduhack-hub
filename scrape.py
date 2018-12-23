@@ -3,9 +3,10 @@ import json
 from bs4 import BeautifulSoup
 from jinja2 import BaseLoader, Template, Environment
 import logging
-logging.basicConfig(level=logging.DEBUG)
 from database import *
 import config as CONFIG
+from dateutil import parser as dateparser
+import datetime
 
 import IPython
 fuck = IPython.embed
@@ -24,7 +25,7 @@ def get_blog_list():
     tlist = b.find_all(id='the-list')[0] 
     children = list(tlist.children)
     blogs = set()
-    toRemove = set(['eduhack.eu', 'eduhack.eu/wall'])
+    toRemove = set(['eduhack.eu'])
     for child in children:
         try:
             link = child.a.contents[0]
@@ -84,7 +85,7 @@ def get_posts(url):
     author = get_username(url)
     jposts = requests.get(url+api).text
     restPosts = json.loads(jposts)
-    schema = ['link', 'date', 'title', 'jetpack_featured_media_url']
+    schema = ['link', 'title', 'jetpack_featured_media_url']
     posts = list()
     for p in restPosts:
        res = {}
@@ -95,7 +96,7 @@ def get_posts(url):
        res['blogurl'] = url
        res['tags'] = fill_tags(p, tags)
        res['categories'] = fill_tags(p, categories, 'categories')
-       logging.debug(res)
+       res['date'] = dateparser.parse(p['date'])
        yield(res)
        #posts.append(res)
     #return posts
@@ -113,6 +114,7 @@ def already_in_db(p, session=None):
     return session.query(Post).filter(Post.link == p['link']).first()
 
 def add_post_todb(p, author, session=None):
+    assert type(p['date']) is datetime.datetime, type(p['date'])
     post = Post(title = p['title'], link=p['link'],
                         date=p['date'], thumb=p['jetpack_featured_media_url'], author=author)
     session.add(post)

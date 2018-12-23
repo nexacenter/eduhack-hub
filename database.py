@@ -45,5 +45,6 @@ engine = create_engine(CONFIG.db)
  
 if not database_exists(engine.url):
     create_database(engine.url)
+    Base.metadata.create_all(engine)
  
 Session = sessionmaker(bind=engine)

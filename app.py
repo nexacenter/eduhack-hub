@@ -57,11 +57,13 @@ def admin():
     
 @app.route('/<int:index>')
 def index_page(index): 
-    index = int(index) # shitty sql inj avoidance
-    index = index if index >= 0 else 0
+    index = int(index) if index >= 0 else 0 # shitty sql inj avoidance
+    min = index*10
     session = Session()
-    query = 'select *, author.link blogurl from author, post  where post.authorid = author.id and post.id > %s order by post.id DESC limit 10;' % index
-    posts = [make_post(p, session) for p in session.execute(query).fetchall()] # could have been done using sql, don't care
+    query = 'select *, author.link blogurl from author, post  where post.authorid = author.id order by post.date DESC;'
+    results = session.execute(query).fetchall()
+    results = results[min:min+10]
+    posts = [make_post(p, session) for p in results] # could have been done using sql, don't care
     return render_template('index.html', posts= posts, index=index)
 
 @app.route('/')
@@ -92,7 +94,7 @@ def validate(form):
 def save_in_db(form):
     import datetime
     from scrape import add_to_db
-    date = datetime.datetime.now().strftime("%b %d %Y %H:%M:%S")
+    date = datetime.datetime.now()
     post = {}
     post['author'] = form['author']
     post['categories'] = form['categories'].split(',')
