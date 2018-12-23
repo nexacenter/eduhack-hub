@@ -6,3 +6,4 @@ sqlalchemy
 sqlalchemy_utils
 flask
 flask-login
+gunicorn
