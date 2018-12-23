@@ -39,6 +39,16 @@ def login():
         return flask.redirect(request.args.get("next") or url_for('admin'))
     return flask.render_template('login.html')
 
+@app.route('/blogs')
+def blogs(): 
+    query = Session().query(Author)
+    for author in CONFIG.do_not_list:
+         query = query.filter(Author.name != author)
+    objs = query.all()
+    blogs = sorted([(b.link, b.name) for b in objs])
+    print(blogs)
+    return flask.render_template('blogs.html',blogs=sorted(blogs))
+
 @app.route('/admin')
 def admin(): 
     return render_template('admin.html')

@@ -11,6 +11,7 @@ Quasi ogni funzione definisce un endpoint:
 
 ```
 /index/<int>/, GET: indice paginato dei post. 10 post alla volta.
+/blogs/, GET: indice dei blog utenti, filtrati secondo config.py.
 /submit, GET and POST: form per postare un link di un blog esterno.
 /login GET and POST: serve per fare il login ed avere accesso agli endpoint successivi.
 
@@ -18,6 +19,9 @@ Quasi ogni funzione definisce un endpoint:
 /remove_title, GET and POST, login required: form per rimuovere un titolo o una url dal database
 /filter, GET and POST, login required: form per inserire o rimuovere dalla blacklist un domain o un URL 
 ```
+
+Le pagine vengono rese attraverso l'uso di templates.
+Header, includes e footer sono definite in base.html. E` uno schifo totale copiato da http://eduhack.eu/wall.
 
 Consiglio di girare flask usando gunicorn e nginx come reverse proxy. Mysql (o meglio) per evitare i malditesta per le scritture concorrenti di sqlite.
 

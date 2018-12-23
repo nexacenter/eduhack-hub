@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+<ul class="list-group">
+  {% for link, name in blogs %}
+  <li class="list-group-item"><a href="{{ link }}">{{ name }}</a></li>
+  {% endfor %}
+</ul>
+</div>
+{% endblock %}
