@@ -1,6 +1,6 @@
-L'hub per eduhack e` composto da un applicativo in flask e da uno scraper da schedulare con cron.
+L'hub per eduhack e\` composto da un applicativo in flask e da uno scraper da schedulare con cron.
 Tutte le funzioni non commentate sono ovvie.
-La configurazione e` contenuta in config.py.
+La configurazione e\` contenuta in config.py.
 
 # Flask
 
@@ -28,9 +28,9 @@ Consiglio di girare flask usando gunicorn e nginx come reverse proxy. Mysql (o m
 
 # Scraper
 
-Lo scraper e` fatto utilizzando requests, beautifulsoup e sqlalchemy per scrivere su db.
+Lo scraper e\` fatto utilizzando requests, beautifulsoup e sqlalchemy per scrivere su db.
 
-La lista dei siti dell'installazione di wordpress multisite non e` accessibile tramite api.
+La lista dei siti dell'installazione di wordpress multisite non e\` accessibile tramite api.
 Per questo motivo lo scraper fa login utilizzando le credenziali provviste e con beautifulsoup parsa una lista dei blogs.
 Una volta ottenuta la lista dei blog da parsare vengono utilizzate le api di wordpress senza autenticazione.
 Gli endpoint utilizzati sono /posts, /users, /categories, /tags.
@@ -40,7 +40,7 @@ Tutti le url o i domini (`blogurl`) contenute in `urls_blacklist` o `domains_bla
 
 ### Gunicorn
 
-Gunicorn e` molto semplice da avviare:
+Gunicorn e\` molto semplice da avviare:
 ` gunicorn app:app -b localhost:8000 -w N `
 dove N sono il numero di workers e app si riferisce al modulo app.py della root directory del progetto.
 Gunicorn non logga gli errori di app.py ma lascia che l'output venga stampato. Si consiglia di ridirezionare stdout e stderr.
@@ -112,7 +112,7 @@ Lo scraper va eseguito secondo un intervallo di tempo (esempio 30 minuti).
 
 #### Considerazioni
 
-Il codice e` il risultato dell'imposizione di deadline stringente.
+Il codice e\` il risultato dell'imposizione di deadline stringente.
 Se si volesse migliorarlo vedi il seguente schema:
 
 1. Portare i file di blacklist dentro il db
@@ -120,5 +120,5 @@ Se si volesse migliorarlo vedi il seguente schema:
 3. usare sqlalchemy per le query invece di query testuali 
 4. creare un endpoint per la lista dei blog in php in modo da poterci accedere tramite le api rest
 5. impostare l'autenticazione per le api di wp
-6. il codice e` abbastanza leggibile ma alcune funzioni vanno spostati in moduli (principalmente login e inizializzazione)
-7. il codice e` abbastanza leggibile ma si puo` fare refactoring di codice duplicato
+6. il codice e\` abbastanza leggibile ma alcune funzioni vanno spostati in moduli (principalmente login e inizializzazione)
+	7. il codice e\` abbastanza leggibile ma si puo` fare refactoring di codice duplicato
