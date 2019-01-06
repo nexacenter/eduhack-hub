@@ -58,7 +58,7 @@ server {
     server_name hub.eduhack.eu;
     
     location / {
-        proxy_pass              http://localhost:8000;
+        proxy_pass              http://localhost:<port>;
         proxy_set_header        Host $host;
         proxy_set_header        X-Real-IP $remote_addr;
         proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -72,7 +72,7 @@ server {
 }
 ```
 
-Si puo` pensare a strategie di caching:
+Si possono pensare strategie di caching:
 
 ```
    location ~* \.(ico|css|js|jpg|png|)$ {
@@ -96,8 +96,8 @@ After=network.target
 
 [Service]
 Type=simple
-User=USER
-WorkingDirectory=/home/HOMEEEEE
+User=<user>
+WorkingDirectory=/home/<user>
 ExecStart=</PATH_TO_local/bin/>gunicorn  --options
 Restart=on-failure
 # oppure: or always, on-abort, etc
