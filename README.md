@@ -7,7 +7,7 @@ cat requirements.txt | xargs pip3 install --user  # with the right user
  
 
 L'hub per eduhack e\` composto da un applicativo in flask e da uno scraper da schedulare con cron.
-L'interfaccia di admin si raggiunge tramite <url>/admin, la password e` contenuta in conf.py
+L'interfaccia di admin si raggiunge tramite <url>/admin, la password e\` contenuta in conf.py
 Tutte le funzioni non commentate sono ovvie.
 La configurazione e\` contenuta in config.py.
 
@@ -33,7 +33,7 @@ Quasi ogni funzione definisce un endpoint:
 ```
 
 Le pagine vengono rese attraverso l'uso di templates.
-Header, includes e footer sono definite in base.html. E` uno schifo totale copiato da http://eduhack.eu/wall.
+Header, includes e footer sono definite in base.html. E\` uno schifo totale copiato da http://eduhack.eu/wall.
 
 Consiglio di girare flask usando gunicorn e nginx come reverse proxy. Mysql (o meglio) per evitare i malditesta per le scritture concorrenti di sqlite.
 
@@ -150,4 +150,4 @@ Se si volesse migliorarlo vedi il seguente schema:
 4. creare un endpoint per la lista dei blog in php in modo da poterci accedere tramite le api rest
 5. impostare l'autenticazione per le api di wp
 6. il codice e\` abbastanza leggibile ma alcune funzioni vanno spostati in moduli (principalmente login e inizializzazione)
-7. il codice e\` abbastanza leggibile ma si puo` fare refactoring di codice duplicato
+7. il codice e\` abbastanza leggibile ma si puo\` fare refactoring di codice duplicato
