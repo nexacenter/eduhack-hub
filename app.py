@@ -48,7 +48,6 @@ def blogs():
          query = query.filter(Author.name != author)
     objs = query.all()
     blogs = sorted([(b.link, b.name) for b in objs])
-    print(blogs)
     return flask.render_template('blogs.html',blogs=sorted(blogs))
 
 @app.route('/admin')
@@ -199,7 +198,6 @@ def search():
        if len(posts) == 0:
                error = 'Nothing found. Try to refine your query.'
        else:
-            print(posts)
     return render_template('search.html', posts=posts, error=error)
 
 @app.route('/remove_title', methods=['GET', 'POST'])
@@ -233,7 +231,6 @@ def remove_title():
 def filter_uurl():
     success = ''
     error = ''
-    print(request.form)
     with open('domains_blacklist', 'r') as f:
          domains = set([l.strip() for l in f.readlines()])
     with open('urls_blacklist', 'r') as f:
