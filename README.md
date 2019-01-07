@@ -142,4 +142,4 @@ Se si volesse migliorarlo vedi il seguente schema:
 4. creare un endpoint per la lista dei blog in php in modo da poterci accedere tramite le api rest
 5. impostare l'autenticazione per le api di wp
 6. il codice e\` abbastanza leggibile ma alcune funzioni vanno spostati in moduli (principalmente login e inizializzazione)
-	7. il codice e\` abbastanza leggibile ma si puo` fare refactoring di codice duplicato
+7. il codice e\` abbastanza leggibile ma si puo` fare refactoring di codice duplicato
