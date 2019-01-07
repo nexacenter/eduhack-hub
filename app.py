@@ -173,18 +173,33 @@ def get_tagged_postsc(tagid):
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     from sqlalchemy import func
+    from fuzzywuzzy import fuzz
     posts = []
+    track_posts = set()
     error = ''
     if request.method == 'POST':
        session = Session()
        queries = request.form['search'].split(',')
+       alltags = list(session.query(Category).all())
+       tags = list() # the tags that match
        for q in queries:
-           tag = session.query(Category).filter(func.lower(Category.name) == q.lower()).first()
-           if tag:
-               posts.extend(get_tag_cat(tag.id, tag.type))
+           for s in alltags:
+               ratio = fuzz.ratio(s.name, q)
+               if ratio > 30:
+                   tags.append((s.id, s.type, s.name, ratio))
+
+       for tag in sorted(tags, key=lambda t: t[-1], reverse=True):
+           iid, ttype, name, ratio = tag
+           new = get_tag_cat(iid, ttype)
+           for n in new:
+               if n['title'] not in track_posts:
+                   track_posts.add(n['title'])
+                   posts.append(n)
               
        if len(posts) == 0:
                error = 'Nothing found. Try to refine your query.'
+       else:
+            print(posts)
     return render_template('search.html', posts=posts, error=error)
 
 @app.route('/remove_title', methods=['GET', 'POST'])
