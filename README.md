@@ -120,8 +120,11 @@ WantedBy=multi-user.target
 ### Scraper / cron
 Lo scraper va eseguito secondo un intervallo di tempo (esempio 30 minuti).
 ``` cron
-0,30 * * * * python3 /path/scrape.py > /logpath/scrape.log
+0,30 * * * * python3 /path/scrape.py > /logpath/scrape.log 2>&1
 ```
+In alternative si puo` usare systemd con un timer:
+
+`https://unix.stackexchange.com/questions/198444/run-script-every-30-min-with-systemd`
 
 # File di configurazione
 
