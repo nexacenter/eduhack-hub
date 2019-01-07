@@ -51,6 +51,7 @@ def blogs():
     return flask.render_template('blogs.html',blogs=sorted(blogs))
 
 @app.route('/admin')
+@login_required
 def admin(): 
     return render_template('admin.html')
     
@@ -197,7 +198,6 @@ def search():
               
        if len(posts) == 0:
                error = 'Nothing found. Try to refine your query.'
-       else:
     return render_template('search.html', posts=posts, error=error)
 
 @app.route('/remove_title', methods=['GET', 'POST'])
@@ -227,6 +227,7 @@ def remove_title():
     return render_template('remove_title.html', error=error, success=success)
 
 @app.route('/filter', methods=['GET', 'POST'])
+@login_required
 # very bad naming
 def filter_uurl():
     success = ''
