@@ -197,7 +197,6 @@ def search():
               
        if len(posts) == 0:
                error = 'Nothing found. Try to refine your query.'
-       else:
     return render_template('search.html', posts=posts, error=error)
 
 @app.route('/remove_title', methods=['GET', 'POST'])
