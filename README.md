@@ -6,6 +6,7 @@ cat requirements.txt | xargs pip3 install --user  # with the right user
  
 
 L'hub per eduhack e\` composto da un applicativo in flask e da uno scraper da schedulare con cron.
+L'interfaccia di admin si raggiunge tramite <url>/admin, la password e` contenuta in conf.py
 Tutte le funzioni non commentate sono ovvie.
 La configurazione e\` contenuta in config.py.
 
@@ -94,6 +95,9 @@ Si possono pensare strategie di caching:
 ### Systemd
 
 Si suppone che al Nexa venga ancora usato systemd.
+`path: /etc/systemd/system/`
+`systemctl enable hub.service`
+
 Si devono sostituire le variabili chiaramente!
 
 ```
@@ -104,7 +108,7 @@ After=network.target
 [Service]
 Type=simple
 User=<user>
-WorkingDirectory=/home/<user>
+WorkingDirectory=/home/<user>/<path to repo>
 ExecStart=</PATH_TO_local/bin/>gunicorn  --options
 Restart=on-failure
 # oppure: or always, on-abort, etc
