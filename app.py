@@ -51,6 +51,7 @@ def blogs():
     return flask.render_template('blogs.html',blogs=sorted(blogs))
 
 @app.route('/admin')
+@login_required
 def admin(): 
     return render_template('admin.html')
     
@@ -226,6 +227,7 @@ def remove_title():
     return render_template('remove_title.html', error=error, success=success)
 
 @app.route('/filter', methods=['GET', 'POST'])
+@login_required
 # very bad naming
 def filter_uurl():
     success = ''
