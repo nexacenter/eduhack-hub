@@ -1,3 +1,10 @@
+# Dipendenze
+
+```
+apt install nginx git python3-pip sqlite3 # root
+cat requirements.txt | xargs pip3 install --user  # with the right user
+ 
+
 L'hub per eduhack e\` composto da un applicativo in flask e da uno scraper da schedulare con cron.
 Tutte le funzioni non commentate sono ovvie.
 La configurazione e\` contenuta in config.py.

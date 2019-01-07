@@ -1,4 +1,8 @@
 jinja2
+python-Levenshtein 
+fuzzywuzzy
+python-dateutil
+lxml
 bs4
 html5lib
 requests
@@ -8,3 +12,4 @@ sqlalchemy_utils
 flask
 flask-login
 gunicorn
+IPython
