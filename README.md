@@ -3,9 +3,11 @@
 ```
 apt install nginx git python3-pip sqlite3 # root
 cat requirements.txt | xargs pip3 install --user  # with the right user
+```
  
 
 L'hub per eduhack e\` composto da un applicativo in flask e da uno scraper da schedulare con cron.
+L'interfaccia di admin si raggiunge tramite <url>/admin, la password e\` contenuta in conf.py
 Tutte le funzioni non commentate sono ovvie.
 La configurazione e\` contenuta in config.py.
 
@@ -31,7 +33,7 @@ Quasi ogni funzione definisce un endpoint:
 ```
 
 Le pagine vengono rese attraverso l'uso di templates.
-Header, includes e footer sono definite in base.html. E` uno schifo totale copiato da http://eduhack.eu/wall.
+Header, includes e footer sono definite in base.html. E\` uno schifo totale copiato da http://eduhack.eu/wall.
 
 Consiglio di girare flask usando gunicorn e nginx come reverse proxy. Mysql (o meglio) per evitare i malditesta per le scritture concorrenti di sqlite.
 
@@ -94,6 +96,9 @@ Si possono pensare strategie di caching:
 ### Systemd
 
 Si suppone che al Nexa venga ancora usato systemd.
+`path: /etc/systemd/system/`
+`systemctl enable hub.service`
+
 Si devono sostituire le variabili chiaramente!
 
 ```
@@ -104,7 +109,7 @@ After=network.target
 [Service]
 Type=simple
 User=<user>
-WorkingDirectory=/home/<user>
+WorkingDirectory=/home/<user>/<path to repo>
 ExecStart=</PATH_TO_local/bin/>gunicorn  --options
 Restart=on-failure
 # oppure: or always, on-abort, etc
@@ -116,8 +121,11 @@ WantedBy=multi-user.target
 ### Scraper / cron
 Lo scraper va eseguito secondo un intervallo di tempo (esempio 30 minuti).
 ``` cron
-0,30 * * * * python3 /path/scrape.py > /logpath/scrape.log
+0,30 * * * * python3 /path/scrape.py > /logpath/scrape.log 2>&1
 ```
+In alternative si puo` usare systemd con un timer:
+
+`https://unix.stackexchange.com/questions/198444/run-script-every-30-min-with-systemd`
 
 # File di configurazione
 
@@ -142,4 +150,4 @@ Se si volesse migliorarlo vedi il seguente schema:
 4. creare un endpoint per la lista dei blog in php in modo da poterci accedere tramite le api rest
 5. impostare l'autenticazione per le api di wp
 6. il codice e\` abbastanza leggibile ma alcune funzioni vanno spostati in moduli (principalmente login e inizializzazione)
-	7. il codice e\` abbastanza leggibile ma si puo` fare refactoring di codice duplicato
+7. il codice e\` abbastanza leggibile ma si puo\` fare refactoring di codice duplicato
