@@ -9,7 +9,7 @@
 			    <img class="card-img-top img-fluid" src="{{ p['thumb'] }}" /> 
 		     {% endif %}
 		    <div class="card-body"> 
-		     <h4 class="card-title"><a href="{{ p['link'] }}"><b>{{ p['title'] }}</b></a></h4> 
+		     <h4 class="card-title"><a href="{{ p['link'] }}"><b>{{ p['title']| title }}</b></a></h4> 
 		     <p class="card-text">by <a href="{{ p['blogurl'] }}">{{ p['author'] }}</a></p>
                      {% if p['tags'].__len__() > 0 %}
                              <p class="card-text">tags:

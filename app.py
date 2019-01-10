@@ -9,6 +9,14 @@ from flask_login import LoginManager, login_user, logout_user, current_user, log
 app = Flask(__name__)
 app.secret_key = CONFIG.secret
 
+@app.template_filter('title')
+def pretty_print(s):
+    ''' unescape then sanitize strings '''
+    # there may be a better way
+    import html
+    import bleach
+    return bleach.clean(html.unescape(s))
+
 ### login boilerplate
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -169,35 +177,69 @@ def get_tagged_postsc(tagid):
     '''
     tagid = 0 if tagid < 0 else int(tagid)
     return render_template('index.html', posts=get_tag_cat(tagid, 'Category'))
-    
-@app.route('/search', methods=['GET', 'POST'])
-def search():
+
+def search(queries, target=30):
     from sqlalchemy import func
     from fuzzywuzzy import fuzz
     posts = []
     track_posts = set()
-    error = ''
-    if request.method == 'POST':
-       session = Session()
-       queries = request.form['search'].split(',')
-       alltags = list(session.query(Category).all())
-       tags = list() # the tags that match
-       for q in queries:
-           for s in alltags:
-               ratio = fuzz.ratio(s.name, q)
-               if ratio > 30:
-                   tags.append((s.id, s.type, s.name, ratio))
+    assert type(queries) is list # and comma divided
+    session = Session()
+    alltags = list(session.query(Category).all())
+    tags = list() # the tags that match
+    for q in queries:
+        for s in alltags:
+            ratio = fuzz.ratio(s.name, q)
+            if ratio > target:
+                tags.append((s.id, s.type, s.name, ratio))
 
-       for tag in sorted(tags, key=lambda t: t[-1], reverse=True):
-           iid, ttype, name, ratio = tag
-           new = get_tag_cat(iid, ttype)
-           for n in new:
-               if n['title'] not in track_posts:
-                   track_posts.add(n['title'])
-                   posts.append(n)
-              
+    for tag in sorted(tags, key=lambda t: t[-1], reverse=True):
+        iid, ttype, name, ratio = tag
+        new = get_tag_cat(iid, ttype)
+        for n in new:
+            if n['title'] not in track_posts:
+                track_posts.add(n['title'])
+                posts.append(n)
+    return posts
+    
+    
+@app.route('/search', methods=['GET', 'POST'])
+def searchroute():
+    error = ''
+    posts = []
+    if request.method == 'POST':
+       queries = request.form['search'].split(',')
+       posts = search(queries)
        if len(posts) == 0:
                error = 'Nothing found. Try to refine your query.'
+    return render_template('search.html', posts=posts, error=error, show_search=True)
+
+@app.route('/course', methods=['GET'])
+def course():
+    ''' Display posts related to the course'''
+    queries = ['activity', 'course', 'area']
+    posts = search(queries, target=60)
+    return render_template('search.html', posts=posts, error='')
+
+@app.route('/italian', methods=['GET'])
+def italian():
+    ''' Display posts related to wtag language italian'''
+    queries = ['italian']
+    error = ''
+    posts = search(queries, target=90)
+    if len(posts) == 0:
+               error = 'Nothing found.'
+    print(posts)
+    return render_template('search.html', posts=posts, error=error)
+
+@app.route('/spanish', methods=['GET'])
+def spanish():
+    ''' ditto '''
+    queries = ['spanish']
+    posts = search(queries, target=90)
+    error = ''
+    if len(posts) == 0:
+               error = 'Nothing found.'
     return render_template('search.html', posts=posts, error=error)
 
 @app.route('/remove_title', methods=['GET', 'POST'])

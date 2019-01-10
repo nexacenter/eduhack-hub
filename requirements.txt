@@ -1,6 +1,7 @@
 jinja2
 python-Levenshtein 
 fuzzywuzzy
+bleach
 python-dateutil
 lxml
 bs4
