@@ -1,6 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container-fluid">
+
+
+<div class="container">
+    <div class="row align-items-center">
+      <div class="order-md-1 text-center text-md-left pr-md-5">
+        <h1 class="h1">Welcome!</h1>
+        <p class="lead">
+             This is the EduHack Hub that aggregates the content from the <a href="https://wall.eduhack.eu">Wall</a>, the
+               <a href="/blogs">Blogosphere </a> and the EduHackathons.
+        </p>
+      </div>
+    </div>
+<hr>
+
+  </div>
+
   <!-- Start of Card Columns Layout --> 
   <div class="card-columns"> 
 	  {% for p in posts %}
