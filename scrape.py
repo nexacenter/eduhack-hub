@@ -40,6 +40,9 @@ def get_username(url):
     endpoint = '/wp-json/wp/v2/users'
     jposts = requests.get(url+endpoint).text
     d = json.loads(jposts)
+    if not d:
+        logging.error(url + ' has no posts')
+        return None
     return d[0]['name']
     
 def get_tags(url):
@@ -83,6 +86,8 @@ def get_posts(url):
     categories = get_cat(url)
     api = '/wp-json/wp/v2/posts'
     author = get_username(url)
+    if author is None:
+        raise StopIteration
     jposts = requests.get(url+api).text
     restPosts = json.loads(jposts)
     schema = ['link', 'title', 'jetpack_featured_media_url']
