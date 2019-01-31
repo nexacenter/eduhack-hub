@@ -218,8 +218,8 @@ def searchroute():
 def course():
     ''' Display posts related to the course'''
     queries = ['activity', 'course', 'area']
-    posts = search(queries, target=60)
-    return render_template('search.html', posts=posts, error='')
+    posts = search(queries, target=40)
+    return render_template('search.html', posts=posts, error='', show_search=True)
 
 @app.route('/italian', methods=['GET'])
 def italian():
