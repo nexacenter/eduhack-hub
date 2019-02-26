@@ -1,7 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
 
+
 <div class="container">
+
+<div class="post-content">
+        <p>
+		Here is the growing list of blogs registered in the EduHack blogosphere.
+        </p>
+</div>
+
+<br>
+<br>
+
 <ul class="list-group">
   {% for link, name in blogs %}
   <li class="list-group-item"><a href="{{ link }}">{{ name }}</a></li>
