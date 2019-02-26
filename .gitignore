@@ -1,0 +1,4 @@
+config.py
+scrape.log
+__pycache__/
+*.bak
