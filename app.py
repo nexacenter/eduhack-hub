@@ -162,21 +162,31 @@ def get_tag_cat(tagid, ttype):
         res.append(make_post(pa, session))
     return res
 
+def get_tag_name(tagid):
+   '''
+   Given a tagid, returns the name of the category/tag corresponding to this tagid
+   '''
+   session = Session()
+   query = 'select c.name cname from category c where c.id = %s' % (tagid)
+   tag_name = session.execute(query).fetchall()
+   tag_name = tag_name[0][0]
+   return tag_name
+
 @app.route('/tag/<int:tagid>')
 def get_tagged_posts(tagid):
     '''
     Given a tag id return all the posts that are tagged with that tag.
     '''
     tagid = 0 if tagid < 0 else int(tagid)
-    return render_template('index.html', posts=get_tag_cat(tagid, 'Tag'))
-    
+    return render_template('filtered_posts.html', posts=get_tag_cat(tagid, 'Tag'), tagid=get_tag_name(tagid))
+
 @app.route('/categories/<int:tagid>')
 def get_tagged_postsc(tagid):
     '''
     Given a tag id return all the posts that are tagged with that tag.
     '''
     tagid = 0 if tagid < 0 else int(tagid)
-    return render_template('index.html', posts=get_tag_cat(tagid, 'Category'))
+    return render_template('filtered_posts.html', posts=get_tag_cat(tagid, 'Category'), tagid=get_tag_name(tagid))
 
 def search(queries, target=30):
     from sqlalchemy import func

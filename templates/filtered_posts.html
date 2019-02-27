@@ -18,9 +18,9 @@
 
 <div class="post-content">
 
-        <h1 class="h1">Welcome</h1>
+        <h1 class="h1">Filtered Posts</h1>
         <p class="lead">
-		This is the EduHack Community Hub, a smart aggregator of the contents produced by all the participants in the EduHack training course and EduHackathons. These contributions are published on the EduHack Wall, in the EduHack Blogosphere and the EduHackathon blogging platforms. The EduHack Community Hub is a knowledge space where EduHackers can meet, read and comment on each other's posts, exchange ideas, experiences and innovative practices in education. Enjoy!
+		Posts filtered by: <span style="font-weight: bold;">{{ tagid }}</span>
         </p>
 </div>
 
@@ -34,7 +34,7 @@
 	  {% for p in posts %}
 	   <div class="card"> 
                      {% if p['thumb'] != '' %}
-			   <a href="{{ p['link'] }}"><img class="card-img-top img-fluid" src="{{ p['thumb'] }}" /></a>
+			    <img class="card-img-top img-fluid" src="{{ p['thumb'] }}" /> 
 		     {% endif %}
 		    <div class="card-body"> 
                       <h4 class="card-title"><a target="_blank" rel="noopener noreferrer" href="{{ p['link'] }}"><b>{{ p['title']|title }}</b></a></h4> 
@@ -58,15 +58,11 @@
           {% endfor %}
   </div> 
   <!-- End of Card Columns Layout --> 
-  <br>
           {% if index is defined %}
-		<div style="text-align: center; font-weight: bold;">
 		  {% if index > 0 %}
-		  <a class="" href="/{{ index -1 }}"><i class="arrow left"></i>&lt; Newer posts</a>
-		  | 
+		  <a class="" href="/{{ index -1 }}"><i class="arrow left"></i> Next posts</a>
 		  {% endif %}
-		  <a href="/{{ index +1 }}"> Previous posts &gt;<i class="arrow right"></i> </a>
-		</div>
+		  <a href="/{{ index +1 }}"> Previous posts <i class="arrow right"></i> </a>
           {% endif %}
 </div> 
 {% endblock %}
