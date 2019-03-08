@@ -1,6 +1,7 @@
 from database import *
 import config as CONFIG
 import IPython
+import logging
 fuck = IPython.embed
 
 from flask import Flask, render_template, request, url_for
@@ -8,6 +9,12 @@ import flask
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required, UserMixin
 app = Flask(__name__)
 app.secret_key = CONFIG.secret
+
+logger=logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+handler = logging.FileHandler('app.log')
+logger.addHandler(handler)
 
 @app.template_filter('title')
 def pretty_print(s):
@@ -104,8 +111,10 @@ def save_in_db(form):
     from scrape import add_to_db
     date = datetime.datetime.now()
     post = {}
+    logger.info(str(form))
     post['author'] = form['author']
-    post['categories'] = form['categories'].split(',')
+    #post['categories'] = form['categories'].split(',')
+    post['categories']=[]
     post['tags'] = form['tags'].split(',')
     post['date'] = date
     post['title'] = form['title']
@@ -202,7 +211,7 @@ def search(queries, target=30):
             ratio = fuzz.ratio(s.name, q)
             if ratio > target:
                 tags.append((s.id, s.type, s.name, ratio))
-
+    logger.info(str(tags))
     for tag in sorted(tags, key=lambda t: t[-1], reverse=True):
         iid, ttype, name, ratio = tag
         new = get_tag_cat(iid, ttype)
@@ -211,8 +220,31 @@ def search(queries, target=30):
                 track_posts.add(n['title'])
                 posts.append(n)
     return posts
-    
-    
+
+def append_author(posts, session):
+    matching=[]
+
+    for post in posts:
+        matching.append(session.query(Post.id,Post.thumb,Post.title,Post.link,Author.name,Author.link.label('blogurl')).filter(Post.authorid==Author.id).filter(Post.id==post.id).first())
+    return matching
+
+def search_category(query):
+
+    session=Session()
+    posts=[]
+
+    cid=session.query(Category.id).filter(Category.name==query).first()
+    if cid is None:
+        return posts
+    pid=session.query(PostHasCategory.pid).filter(PostHasCategory.cid==cid[0]).all()
+    pid=[t[0] for t in pid]
+    matching=session.query(Post).filter(Post.id.in_(pid)).all()
+    matching=append_author(matching,session)
+
+    for post in matching:
+        posts.append(make_post(post,session))
+    return posts
+
 @app.route('/search', methods=['GET', 'POST'])
 def searchroute():
     error = ''
@@ -251,6 +283,68 @@ def spanish():
     if len(posts) == 0:
                error = 'Nothing found.'
     return render_template('search.html', posts=posts, error=error)
+
+@app.route('/english', methods=['GET'])
+def english():
+    ''' ditto '''
+    queries = ['english']
+    posts = search(queries, target=90)
+    error = ''
+    if len(posts) == 0:
+               error = 'Nothing found.'
+    return render_template('search.html', posts=posts, error=error)
+
+@app.route('/coventry', methods=['GET'])
+def coventry():
+    ''' ditto '''
+    queries = ['coventry']
+    posts = search(queries, target=90)
+    error = ''
+    if len(posts) == 0:
+               error = 'Nothing found.'
+    return render_template('search.html', posts=posts, error=error)
+
+@app.route('/polito', methods=['GET'])
+def polito():
+    ''' ditto '''
+    queries = ['polito']
+    posts = search(queries, target=90)
+    error = ''
+    if len(posts) == 0:
+               error = 'Nothing found.'
+    return render_template('search.html', posts=posts, error=error)
+
+@app.route('/unir', methods=['GET'])
+def unir():
+    ''' ditto '''
+    queries = ['unir']
+    posts = search(queries, target=90)
+    error = ''
+    if len(posts) == 0:
+               error = 'Nothing found.'
+    return render_template('search.html', posts=posts, error=error)
+
+@app.route('/area/<string:number>', methods=['GET'])
+def area(number):
+    ''' ditto '''
+    query = 'Area '+number
+    posts = search_category(query)
+    error = ''
+    if len(posts) == 0:
+               error = 'Nothing found.'
+    area = 'area-'+number+'.html'
+    return render_template(area, posts=posts, error=error)
+
+#@app.route('/activity/<string:number>', methods=['GET'])
+#def activity(number):
+#    ''' ditto '''
+#    number=number.replace('-','.')
+#    query = 'Activity '+number
+#    posts = search_category(query)
+#    error = ''
+#    if len(posts) == 0:
+#        error = 'Nothing found.'
+#    return render_template('search.html', posts=posts, error=error)
 
 @app.route('/remove_title', methods=['GET', 'POST'])
 @login_required

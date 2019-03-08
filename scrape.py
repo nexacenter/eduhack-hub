@@ -37,16 +37,18 @@ def get_blog_list():
     return blogs
 
 def get_username(url):
-    endpoint = '/wp-json/wp/v2/users'
+    endpoint = '/wp-json/wp/v2/users?per_page=100'
     jposts = requests.get(url+endpoint).text
     d = json.loads(jposts)
     if not d:
         logging.error(url + ' has no posts')
         return None
+    if d[0]['name'] == 'admin':
+        return 'Anonymous' # wall writer
     return d[0]['name']
     
 def get_tags(url):
-    endpoint = '/wp-json/wp/v2/tags'
+    endpoint = '/wp-json/wp/v2/tags?per_page=100'
     jposts = requests.get(url+endpoint).text
     d = json.loads(jposts)
     res = {}
@@ -55,7 +57,7 @@ def get_tags(url):
     return res
 
 def get_cat(url):
-    endpoint = '/wp-json/wp/v2/categories'
+    endpoint = '/wp-json/wp/v2/categories?per_page=100'
     jposts = requests.get(url+endpoint).text
     d = json.loads(jposts)
     res = {}
