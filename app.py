@@ -2,6 +2,7 @@ from database import *
 import config as CONFIG
 import IPython
 import logging
+import os
 fuck = IPython.embed
 
 from flask import Flask, render_template, request, url_for
@@ -372,6 +373,8 @@ def remove_title():
                 session.delete(post)
                 session.commit()
                 success = 'Post removed.'
+                with open('urls_blacklist', 'a+') as f:
+                    f.write("\n%s\n" %post.link)
     return render_template('remove_title.html', error=error, success=success)
 
 @app.route('/filter', methods=['GET', 'POST'])
@@ -380,6 +383,13 @@ def remove_title():
 def filter_uurl():
     success = ''
     error = ''
+   
+    #Create blacklist files if they do not exist
+    if not os.path.isfile('domains_blacklist'):
+        open('domains_blacklist', 'a+').close()
+    if not os.path.isfile('urls_blacklist'):
+        open('urls_blacklist', 'a+').close()
+   
     with open('domains_blacklist', 'r') as f:
          domains = set([l.strip() for l in f.readlines()])
     with open('urls_blacklist', 'r') as f:
@@ -396,17 +406,17 @@ def filter_uurl():
        if entry == '':
              error = 'Please insert a domain or a URL'
        elif action == 1: # blacklist domain
-             with open('domains_blacklist', 'a') as f:
+             with open('domains_blacklist', 'a+') as f:
                           f.write("\n%s\n" %entry)
        elif action == 2: # blacklist url
-             with open('urls_blacklist', 'a') as f:
+             with open('urls_blacklist', 'a+') as f:
                           f.write("\n%s\n" %entry)
        elif action == 3: # remove domain
              if entry not in domains:
                   error = 'You entered a domain that is not in the blacklist.'
              else:
                   domains.remove(entry)
-                  with open('domains_blacklist', 'w') as f:
+                  with open('domains_blacklist', 'w+') as f:
                       for d in domains:
                           f.write("%s\n" %d)
        elif action == 4: # remove url
@@ -414,7 +424,7 @@ def filter_uurl():
                   error = 'You entered a url that is not in the blacklist.'
              else:
                   urls.remove(entry)
-                  with open('urls_blacklist', 'w') as f:
+                  with open('urls_blacklist', 'w+') as f:
                       for d in urls:
                           f.write("%s\n" %d)
 

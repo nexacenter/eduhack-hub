@@ -11,6 +11,12 @@ import datetime
 import IPython
 fuck = IPython.embed
 
+#logger=logging.getLogger(__name__)
+#logger.setLevel(logging.INFO)
+
+#handler = logging.FileHandler('scrapedebug.log')
+#logger.addHandler(handler)
+
 def get_blog_list():
     logging.info('getting sites list with auth')
     s = requests.Session()
@@ -44,7 +50,7 @@ def get_username(url):
         logging.error(url + ' has no posts')
         return None
     if d[0]['name'] == 'admin':
-        return 'Anonymous' # wall writer
+        del d[0] # when taking the user from the wall remove the first one (admin) and return the second
     return d[0]['name']
     
 def get_tags(url):
@@ -75,6 +81,7 @@ def fill_tags(post, tags, key='tags'):
     tagnames = list()
     for tid in post[key]:
         if tid in tags:
+            #logger.info('Cat: '+tags[tid]+'\n')
             tagnames.append(tags[tid]) # fill with tag names
         else:
             logging.error(' '.join(['no', str(tid), 'for', post['link']]))
