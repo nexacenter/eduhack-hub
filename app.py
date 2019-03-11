@@ -350,26 +350,28 @@ def area(number):
 @login_required
 def remove_title():
     success = ''
+    error=''
     if request.method == 'GET':
         error = ''
+    
     else:
-        title = form['title'] 
-        link = form['link'] 
+        title = request.form['title'] 
+        link = request.form['link']
         if link == '' and title == '':
-           error = 'Insert a title or a link.'
+            error = 'Insert a title or a link.'
         else:
-             session = Session()
-             post = None
-             if link != '':
+            session = Session()
+            post = None
+            if link != '':
                 post = session.query(Post).filter(Post.link == link).first()
-             elif title != '':
+            elif title != '':
                 post = session.query(Post).filter(Post.title == title).first()
-             if not post:
-                 error = 'Invalid title'
-             else:
-                 session.delete(post)
-                 session.commit()
-                 success = 'Title removed.'
+            if not post:
+                error = 'Invalid title'
+            else:
+                session.delete(post)
+                session.commit()
+                success = 'Post removed.'
     return render_template('remove_title.html', error=error, success=success)
 
 @app.route('/filter', methods=['GET', 'POST'])
