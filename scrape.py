@@ -20,25 +20,35 @@ fuck = IPython.embed
 def get_blog_list():
     logging.info('getting sites list with auth')
     s = requests.Session()
-    sites = 'https://eduhack.eu/wp-admin/network/sites.php'
+    page_num = 1
+    blogs = set()
+    sites = 'https://eduhack.eu/wp-admin/network/sites.php?paged='
     login = 'https://eduhack.eu/wp-login.php'
+    toRemove = set(['eduhack.eu'])
 
     s.post(login, data={'log': CONFIG.email, 'pwd':CONFIG.wp_pwd})
-    sitesHtml = s.get(sites).text
+    sitesHtml = s.get(sites+str(page_num)).text
 
     b = BeautifulSoup(sitesHtml, features='lxml')
+    max_pages = int(b.find_all(class_='displaying-num')[0].contents[0].split(' ')[0])//20+1 # Gets the number of websites in the multisite and computes the number of pages to scrape
 
-    tlist = b.find_all(id='the-list')[0] 
-    children = list(tlist.children)
-    blogs = set()
-    toRemove = set(['eduhack.eu'])
-    for child in children:
-        try:
-            link = child.a.contents[0]
-                # yield link # can't yield because of session duration
-            blogs.add(link)
-        except:
-            pass
+    while True:
+        tlist = b.find_all(id='the-list')[0] 
+        children = list(tlist.children)
+        for child in children:
+            try:
+                link = child.a.contents[0]
+                    # yield link # can't yield because of session duration
+                blogs.add(link)
+            except:
+                pass
+
+        page_num = page_num+1
+        if page_num > max_pages:
+            break
+        sitesHtml = s.get(sites+str(page_num)).text
+        b = BeautifulSoup(sitesHtml, features='lxml')
+
     blogs = blogs - toRemove
     return blogs
 
@@ -98,7 +108,7 @@ def get_posts(url):
         url = 'https://' + url
     tags = get_tags(url)
     categories = get_cat(url)
-    api = '/wp-json/wp/v2/posts'
+    api = '/wp-json/wp/v2/posts?per_page=100'
     author = get_username(url)
     if author is None:
         raise StopIteration
