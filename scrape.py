@@ -59,9 +59,20 @@ def get_username(url):
     if not d:
         logging.error(url + ' has no posts')
         return None
-    if d[0]['name'] == 'admin':
-        del d[0] # when taking the user from the wall remove the first one (admin) and return the second
-    return d[0]['name']
+
+    if '/wall.' in d[0]['link']:
+        name = 'EduHack Wall'
+    elif '/polito.' in d[0]['link']:
+        name = 'PoliTo EduHackathon'
+    elif '/coventry.' in d[0]['link']:
+        name = 'Coventry EduHackaton'
+    elif '/unir.' in d[0]['link']:
+        name = 'UNIR EduHackaton'
+    else:
+        name = d[0]['name']
+    # del d[0] # when taking the user from the wall remove the first one (admin) and return the second
+
+    return name
     
 def get_tags(url):
     i=1
@@ -108,7 +119,7 @@ def get_posts(url):
         url = 'https://' + url
     tags = get_tags(url)
     categories = get_cat(url)
-    api = '/wp-json/wp/v2/posts?per_page=100'
+    api = '/wp-json/wp/v2/posts?per_page=10'
     author = get_username(url)
     if author is None:
         raise StopIteration
