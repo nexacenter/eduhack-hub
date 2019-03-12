@@ -54,12 +54,17 @@ def get_username(url):
     return d[0]['name']
     
 def get_tags(url):
-    endpoint = '/wp-json/wp/v2/tags?per_page=100'
-    jposts = requests.get(url+endpoint).text
+    i=1
+    endpoint = '/wp-json/wp/v2/tags?per_page=100&page='
+    jposts = requests.get(url+endpoint+str(i)).text
     d = json.loads(jposts)
     res = {}
-    for tag in d:
-       res[tag['id']] = tag['name']
+    while d:
+        for tag in d:
+           res[tag['id']] = tag['name']
+        i=i+1
+        jposts=requests.get(url+endpoint+str(i)).text
+        d=json.loads(jposts)
     return res
 
 def get_cat(url):
