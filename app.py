@@ -370,6 +370,7 @@ def remove_title():
             if not post:
                 error = 'Invalid title'
             else:
+                posthascategory = session.query(PostHasCategory).filter(PostHasCategory.pid == post.id).delete()
                 session.delete(post)
                 session.commit()
                 success = 'Post removed.'
