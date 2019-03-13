@@ -154,6 +154,7 @@ def make_post(post, session):
     p['blogurl'] = post.blogurl if 'http' == post.blogurl[:4] else 'http://' + post.blogurl
     p['tags'] = [(t.cid, t.cname) for t in tags]
     p['categories'] = [(t.cid, t.cname) for t in categories]
+    p['date'] = post.date
     return p
 
 def get_tag_cat(tagid, ttype):
@@ -220,6 +221,7 @@ def search(queries, target=30):
             if n['title'] not in track_posts:
                 track_posts.add(n['title'])
                 posts.append(n)
+    posts = sorted(posts, key=(lambda k:k['date']), reverse=True)
     return posts
 
 def append_author(posts, session):
