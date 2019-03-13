@@ -161,7 +161,7 @@ def get_tag_cat(tagid, ttype):
     Commond code for getting posts tagged with tags or categories
     '''
     session = Session()
-    tagq= 'select p.id, c.name cname, c.type type from  posthascategory pc, category c, post p where pc.cid = c.id and pc.pid = p.id and pc.type = "%s" and c.id = %s;' % (ttype, tagid)
+    tagq= 'select p.id, c.name cname, c.type type from  posthascategory pc, category c, post p where pc.cid = c.id and pc.pid = p.id and pc.type = "%s" and c.id = %s order by p.date desc;' % (ttype, tagid)
     # here get only posts id.
     # then gather every info needed from multiple queries
     posts = session.execute(tagq).fetchall()
