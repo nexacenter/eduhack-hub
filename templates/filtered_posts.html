@@ -29,35 +29,35 @@
 
   </div>
 
-  <!-- Start of Card Columns Layout --> 
-  <div class="card-columns"> 
-	  {% for p in posts %}
-	   <div class="card"> 
+  <!-- Start of Card Columns Layout -->
+  <div class="card-columns">
+          {% for p in posts %}
+           <div class="card bg-light">
                      {% if p['thumb'] != '' %}
-			    <img class="card-img-top img-fluid" src="{{ p['thumb'] }}" /> 
-		     {% endif %}
-		    <div class="card-body"> 
-                      <h4 class="card-title"><a target="_blank" rel="noopener noreferrer" href="{{ p['link'] }}"><b>{{ p['title']|title }}</b></a></h4> 
-                      <p class="card-text">by <a target="_blank" rel="noopener noreferrer" href="{{ p['blogurl'] }}">{{ p['author'] }}</a></p>
+                           <a href="{{ p['link'] }}"><img class="card-img-top img-fluid" src="{{ p['thumb'] }}" /></a>
+                     {% endif %}
+                    <div class="card-body">
+                      <h2 class="card-title"><a target="_blank" rel="noopener noreferrer" href="{{ p['link'] }}"><b>{{ p['title']|title }}</b></a></h2>
+                      <h4 class="card-subtitle text-muted mb-3">by <a target="_blank" rel="noopener noreferrer" href="{{ p['blogurl'] }}">{{ p['author'] }}</a></h4>
                      {% if p['tags'].__len__() > 0 %}
-                             <p class="card-text">tags:
+                             <p class="card-text text-muted">tags:
                              {% for id, name in p['tags'] %}
-                                 <a href="/tag/{{ id }}"> {{ name }} </a>
+                                   <a class="btn btn-info" href="/tag/{{ id }}"> {{ name }} </a>
                              {% endfor %}
                              </p>
                      {% endif %}
                      {% if p['categories'].__len__() > 0 %}
-                             <p class="card-text">categories:
+                             <p class="card-text text-muted">categories:
                              {% for id, name in p['categories'] %}
-                                 <a href="/categories/{{ id }}"> {{ name }} </a>
+                                 <a class="btn btn-info" href="/categories/{{ id }}"> {{ name }} </a>
                              {% endfor %}
                              </p>
                      {% endif %}
-		    </div> 
-	    </div> 
+                    </div>
+            </div>
           {% endfor %}
-  </div> 
-  <!-- End of Card Columns Layout --> 
+  </div>
+  <!-- End of Card Columns Layout -->
           {% if index is defined %}
 		  {% if index > 0 %}
 		  <a class="" href="/{{ index -1 }}"><i class="arrow left"></i> Next posts</a>
