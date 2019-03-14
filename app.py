@@ -330,11 +330,12 @@ def unir():
 @app.route('/area/<string:number>', methods=['GET'])
 def area(number):
     ''' ditto '''
-    query = 'Area '+number
-    posts = search_category(query)
+    #query = 'Area '+number
+    #posts = search_category(query)
     error = ''
-    if len(posts) == 0:
-               error = 'Nothing found.'
+    posts = ''
+    #if len(posts) == 0:
+    #           error = 'Nothing found.'
     area = 'area-'+number+'.html'
     return render_template(area, posts=posts, error=error)
 
