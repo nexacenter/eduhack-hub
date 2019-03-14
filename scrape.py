@@ -31,7 +31,7 @@ def get_blog_list():
 
     b = BeautifulSoup(sitesHtml, features='lxml')
     max_pages = int(b.find_all(class_='displaying-num')[0].contents[0].split(' ')[0])//20+1 # Gets the number of websites in the multisite and computes the number of pages to scrape
-
+    logging.info(str(max_pages))
     while True:
         tlist = b.find_all(id='the-list')[0] 
         children = list(tlist.children)
@@ -50,6 +50,7 @@ def get_blog_list():
         b = BeautifulSoup(sitesHtml, features='lxml')
 
     blogs = blogs - toRemove
+    logging.error(str(blogs))
     return blogs
 
 def get_username(url):
@@ -117,10 +118,18 @@ def get_posts(url):
     logging.info('getting posts for: ' +url)
     if 'http' != url[:4]:
         url = 'https://' + url
-    tags = get_tags(url)
-    categories = get_cat(url)
-    api = '/wp-json/wp/v2/posts?per_page=10'
-    author = get_username(url)
+
+    api = '/wp-json/wp/v2/posts?per_page=100'
+
+    try:
+        tags = get_tags(url)
+        categories = get_cat(url)
+        author = get_username(url)
+    except:
+        tags=[]
+        categories=[]
+        author=None
+
     if author is None:
         raise StopIteration
     jposts = requests.get(url+api).text
@@ -216,7 +225,14 @@ def add_to_db(post):
     session.commit()
 
 if __name__ == '__main__':
+    import time
+    start_time=time.time()
+    logging.basicConfig(level=logging.ERROR)
+    count=1
     all = list()
     for b in get_blog_list():
         for post in get_posts(b):
             add_to_db(post)
+        logging.error('Completed '+str(count))
+        count=count+1
+    logging.error('--- %s seconds ---' % (time.time()-start_time))
