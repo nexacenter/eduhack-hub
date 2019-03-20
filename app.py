@@ -5,7 +5,7 @@ import logging
 import os
 fuck = IPython.embed
 
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect
 import flask
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required, UserMixin
 app = Flask(__name__)
@@ -78,8 +78,10 @@ def index_page(index):
     session = Session()
     query = 'select *, author.link blogurl from author, post  where post.authorid = author.id order by post.date DESC;'
     results = session.execute(query).fetchall()
-    results = results[min:min+10]
-    posts = [make_post(p, session) for p in results] # could have been done using sql, don't care
+    results_for_page = results[min:min+11]
+    posts = [make_post(p, session) for p in results_for_page] # could have been done using sql, don't care
+    if not posts:
+        return redirect(request.url_root)
     return render_template('index.html', posts= posts, index=index)
 
 @app.route('/')
