@@ -266,67 +266,6 @@ def course():
     posts = search(queries, target=40)
     return render_template('search.html', posts=posts, error='', show_search=True)
 
-@app.route('/italian', methods=['GET'])
-def italian():
-    ''' Display posts related to wtag language italian'''
-    queries = ['italian']
-    error = ''
-    posts = search(queries, target=90)
-    if len(posts) == 0:
-               error = 'Nothing found.'
-    print(posts)
-    return render_template('search.html', posts=posts, error=error)
-
-@app.route('/spanish', methods=['GET'])
-def spanish():
-    ''' ditto '''
-    queries = ['spanish']
-    posts = search(queries, target=90)
-    error = ''
-    if len(posts) == 0:
-               error = 'Nothing found.'
-    return render_template('search.html', posts=posts, error=error)
-
-@app.route('/english', methods=['GET'])
-def english():
-    ''' ditto '''
-    queries = ['english']
-    posts = search(queries, target=90)
-    error = ''
-    if len(posts) == 0:
-               error = 'Nothing found.'
-    return render_template('search.html', posts=posts, error=error)
-
-@app.route('/coventry', methods=['GET'])
-def coventry():
-    ''' ditto '''
-    queries = ['coventry']
-    posts = search(queries, target=90)
-    error = ''
-    if len(posts) == 0:
-               error = 'Nothing found.'
-    return render_template('search.html', posts=posts, error=error)
-
-@app.route('/polito', methods=['GET'])
-def polito():
-    ''' ditto '''
-    queries = ['polito']
-    posts = search(queries, target=90)
-    error = ''
-    if len(posts) == 0:
-               error = 'Nothing found.'
-    return render_template('search.html', posts=posts, error=error)
-
-@app.route('/unir', methods=['GET'])
-def unir():
-    ''' ditto '''
-    queries = ['unir']
-    posts = search(queries, target=90)
-    error = ''
-    if len(posts) == 0:
-               error = 'Nothing found.'
-    return render_template('search.html', posts=posts, error=error)
-
 @app.route('/area/<string:number>', methods=['GET'])
 def area(number):
     ''' ditto '''
