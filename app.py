@@ -82,7 +82,7 @@ def index_page(index):
     posts = [make_post(p, session) for p in results_for_page] # could have been done using sql, don't care
     if not posts:
         return redirect(request.url_root)
-    return render_template('index.html', posts= posts, index=index)
+    return render_template('index.html', posts=posts, index=index)
 
 @app.route('/')
 def index():
@@ -200,6 +200,16 @@ def get_tagged_postsc(tagid):
     '''
     tagid = 0 if tagid < 0 else int(tagid)
     return render_template('filtered_posts.html', posts=get_tag_cat(tagid, 'Category'), tagid=get_tag_name(tagid))
+
+@app.route('/category/<string:name>')
+def filter_by_category_name(name):
+    session = Session()
+    name = name.replace('_', ' ')
+    result = session.query(Category).filter(func.lower(Category.name)==func.lower(name)).first()
+    if result:
+        return redirect(request.url_root+'/categories/'+str(result.id))
+    return redirect(request.url_root)
+
 
 def search(queries, target=30):
     from sqlalchemy import func
