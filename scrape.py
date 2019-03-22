@@ -17,6 +17,47 @@ fuck = IPython.embed
 #handler = logging.FileHandler('scrapedebug.log')
 #logger.addHandler(handler)
 
+categorymap = {
+    "Activity 1.1":"Activity 1.1 - Search for Open Educational Resources (OER)",
+    "Activity 1.2":"Activity 1.2 - Modify existing digital content by using Wikis",
+    "Activity 1.3":"Activity 1.3 - Create digital educational resources",
+    "Activity 1.4":"Activity 1.4 - Curate and organise digital resources",
+    "Activity 1.5":"Activity 1.5 - Apply open licenses to your resources",
+    "Activity 2.1":"Activity 2.1 - Design your own eLearning intervention",
+    "Activity 2.2":"Activity 2.2 - Implement ICT-supported collaborative learning",
+    "Activity 2.3":"Activity 2.3 - Guide and support students through e-moderation",
+    "Activity 2.4":"Activity 2.4 - Foster knowledge co-creation among students",
+    "Activity 2.5":"Activity 2.5 - Create and select video resources for your teaching",
+    "Activity 2.6":"Activity 2.6 - Use games to improve learners engagement",
+    "Activity 3.1":"Activity 3.1 - Explore digitally supported assessment strategies",
+    "Activity 3.2":"Activity 3.2 - Experiment with different technologies for formative assessment",
+    "Activity 3.3":"Activity 3.3 - Analyse evidence on learning activity, performance and progress",
+    "Activity 3.4":"Activity 3.4 - Use digital technologies to provide targeted feedback to learners",
+    "Activity 4.1":"Activity 4.1 - Critically evaluate online tools",
+    "Activity 4.2":'Activity 4.2 - Discover the cost of "free" commercial social media platforms',
+    "Activity 4.3":"Activity 4.3 - Appreciate opportunities and risks of personalization in learning",
+    "Activity 4.4":"Activity 4.4 - Check technical accessibility of platforms and resources",
+    "A1.1 Search for Open Educational Resources (OER)":"Activity 1.1 - Search for Open Educational Resources (OER)",
+    "A1.2 Modify existing digital content by using Wikis":"Activity 1.2 - Modify existing digital content by using Wikis",
+    "A1.3 Create digital educational resources":"Activity 1.3 - Create digital educational resources",
+    "A1.4 Curate and organise digital resources":"Activity 1.4 - Curate and organise digital resources",
+    "A1.5 Apply open licenses to your resources":"Activity 1.5 - Apply open licenses to your resources",
+    "A2.1 Design your own eLearning intervention":"Activity 2.1 - Design your own eLearning intervention",
+    "A2.2 Implement ICT-supported collaborative learning":"Activity 2.2 - Implement ICT-supported collaborative learning",
+    "A2.3 Guide and support students through e-moderation":"Activity 2.3 - Guide and support students through e-moderation",
+    "A2.4 Foster knowledge co-creation among students":"Activity 2.4 - Foster knowledge co-creation among students",
+    "A2.5 Create and select video resources for your teaching":"Activity 2.5 - Create and select video resources for your teaching",
+    "A2.6 Use games to improve learners engagement":"Activity 2.6 - Use games to improve learners engagement",
+    "A3.1 Explore digitally supported assessment strategies":"Activity 3.1 - Explore digitally supported assessment strategies",
+    "A3.2 Experiment with different technologies for formative assessment":"Activity 3.2 - Experiment with different technologies for formative assessment",
+    "A3.3 Analyse evidence on learning activity, performance and progress":"Activity 3.3 - Analyse evidence on learning activity, performance and progress",
+    "A3.4 Use digital technologies to provide targeted feedback to learners":"Activity 3.4 - Use digital technologies to provide targeted feedback to learners",
+    "A4.1 Critically evaluate online tools":"Activity 4.1 - Critically evaluate online tools",
+    "A4.2 Discover the cost of \"free\" commercial social media platforms":'Activity 4.2 - Discover the cost of "free" commercial social media platforms',
+    "A4.3 Appreciate opportunities and risks of personalization in learning":"Activity 4.3 - Appreciate opportunities and risks of personalization in learning",
+    "A4.4 Check technical accessibility of platforms and resources":"Activity 4.4 - Check technical accessibility of platforms and resources"
+}
+
 def get_blog_list():
     logging.info('getting sites list with auth')
     s = requests.Session()
@@ -95,7 +136,10 @@ def get_cat(url):
     d = json.loads(jposts)
     res = {}
     for cat in d:
-       res[cat['id']] = cat['name']
+       if cat['name'] in categorymap:
+           res[cat['id']] = categorymap[cat['name']]
+       else:
+           res[cat['id']] = cat['name']
     if 'Uncategorized' in res:
         res.remove('Uncategorized')
     return res
@@ -112,6 +156,13 @@ def fill_tags(post, tags, key='tags'):
             tagnames.append(tags[tid]) # fill with tag names
         else:
             logging.error(' '.join(['no', str(tid), 'for', post['link']]))
+    if '/polito.' in post['link']:
+        tagnames.append('PoliTo EduHackathon')
+    elif '/coventry.' in post['link']:
+        tagnames.append('Coventry EduHackaton')
+    elif '/unir.' in post['link']:
+        tagnames.append('UNIR EduHackaton')
+    
     return sorted(tagnames)
 
 def get_posts(url):
