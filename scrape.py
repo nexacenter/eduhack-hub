@@ -107,9 +107,9 @@ def get_username(url):
     elif '/polito.' in d[0]['link']:
         name = 'PoliTo EduHackathon'
     elif '/coventry.' in d[0]['link']:
-        name = 'Coventry EduHackaton'
+        name = 'Coventry EduHackathon'
     elif '/unir.' in d[0]['link']:
-        name = 'UNIR EduHackaton'
+        name = 'UNIR EduHackathon'
     else:
         name = d[0]['name']
     # del d[0] # when taking the user from the wall remove the first one (admin) and return the second
@@ -159,9 +159,9 @@ def fill_tags(post, tags, key='tags'):
     if '/polito.' in post['link']:
         tagnames.append('PoliTo EduHackathon')
     elif '/coventry.' in post['link']:
-        tagnames.append('Coventry EduHackaton')
+        tagnames.append('Coventry EduHackathon')
     elif '/unir.' in post['link']:
-        tagnames.append('UNIR EduHackaton')
+        tagnames.append('UNIR EduHackathon')
     
     return sorted(tagnames)
 
