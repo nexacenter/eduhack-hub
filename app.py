@@ -208,7 +208,7 @@ def filter_by_category_name(name):
     result = session.query(Category).filter(func.lower(Category.name)==func.lower(name)).first()
     if result:
         return redirect(request.url_root+'/categories/'+str(result.id))
-    return redirect(request.url_root)
+    return render_template('search.html', posts=[], error='No post belonging to the selected category.', show_search=True)
 
 
 def search(queries, target=30):
