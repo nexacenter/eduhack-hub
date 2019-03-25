@@ -55,7 +55,15 @@ categorymap = {
     "A4.1 Critically evaluate online tools":"Activity 4.1 - Critically evaluate online tools",
     "A4.2 Discover the cost of \"free\" commercial social media platforms":'Activity 4.2 - Discover the cost of "free" commercial social media platforms',
     "A4.3 Appreciate opportunities and risks of personalization in learning":"Activity 4.3 - Appreciate opportunities and risks of personalization in learning",
-    "A4.4 Check technical accessibility of platforms and resources":"Activity 4.4 - Check technical accessibility of platforms and resources"
+    "A4.4 Check technical accessibility of platforms and resources":"Activity 4.4 - Check technical accessibility of platforms and resources",
+    "Area 1":"Area 1 - Digital Resources",
+    "Area 2":"Area 2 - Teaching",
+    "Area 3":"Area 3: Assessment",
+    "Area 4":"Area 4: Empowering students",
+    "Digital Resources":"",
+    "Teaching":"",
+    "Assessment":"",
+    "Empowering students":""
 }
 
 def get_blog_list():
