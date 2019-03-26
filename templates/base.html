@@ -52,7 +52,15 @@ img.emoji {
 	.dropdown:hover {
 		color: #FFFFFF;
 		cursor: pointer;
-	}	
+	}
+
+ 	.dropdown:hover > .dd-item {
+		display: block;
+	}
+
+	.main-menu li ul.dd-item {
+		display: none;
+	}
 </style>
 <link rel='stylesheet' id='dashicons-css'  href='https://wall.eduhack.eu/wp-includes/css/dashicons.min.css?ver=5.0.3' type='text/css' media='all' />
 <link rel='stylesheet' id='yasrcsslightscheme-css'  href='https://wall.eduhack.eu/wp-content/plugins/yet-another-stars-rating/css/yasr-table-light.css' type='text/css' media='all' />
@@ -204,6 +212,31 @@ font-family: "Quicksand" !important;
 <li id="menu-item-54" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54"><a href="/">!!!DEVELOPMENT!!!</a></li>
 <li id="menu-item-55" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-55"><a href="/submit">Submit</a></li>
 <li id="menu-item-56" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-56"><a href="/blogs">Blogs</a></li>
+<li id="menu-item-56" class="menu-item-has-children dropdown"><a href="#">Filters</a>
+    <ul class="">
+           <li id="menu-item-550" class="dropdown"><a href="#">Languages</a>
+	        <ul class="dd-item">
+			<li id="" class=""><a href="/category/italian">Italian</a></li>
+			<li id="" class=""><a href="/category/spanish">Spanish</a></li>
+			<li id="" class=""><a href="/category/english">English</a></li>
+                </ul>
+	   </li>
+           <li id="menu-item-300" class="dropdown"><a href="#">Affiliation</a>
+		<ul class="dd-item">
+			<li id="" class=""><a href="/category/coventry_university">Coventry University</a></li>
+			<li id="" class=""><a href="/category/politecnico_di_torino">Politecnico di Torino</a></li>
+			<li id="" class=""><a href="/category/unir">UNIR</a></li>
+		</ul>
+	   </li>
+           <li id="menu-item-390" class="dropdown"><a href="#">Topics</a>
+		<ul class="dd-item">
+			<li id="" class=""><a href="/area/1">Area 1</a></li>
+			<li id="" class=""><a href="/area/2">Area 2</a></li>
+			<li id="" class=""><a href="/area/3">Area 3</a></li>
+			<li id="" class=""><a href="/area/4">Area 4</a></li>
+		</ul>
+           </li>
+    </ul>
 <li id="menu-item-54" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-54"><a href="https://eduhack.eu/course" target="_blank">Course</a></li>
 <li id="menu-item-64" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-64"><a href="https://eduhack.eu/" target="_blank">Project</a></li>
 <li id="menu-item-64" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-64">
