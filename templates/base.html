@@ -61,6 +61,22 @@ img.emoji {
 	.main-menu li ul.dd-item {
 		display: none;
 	}
+
+	.main-menu li.lang {
+		margin: 0 0 0 0;
+	
+	}
+	.main-menu > li.lang:hover > a{
+		background-color: transparent;
+	}
+	.mobile-menu li.lang a:hover{
+		background-color: transparent;
+		
+	}
+
+	.mobile-menu li.lang{
+		margin: 0px 0px 0px 20px;
+	}
 </style>
 <link rel='stylesheet' id='dashicons-css'  href='https://wall.eduhack.eu/wp-includes/css/dashicons.min.css?ver=5.0.3' type='text/css' media='all' />
 <link rel='stylesheet' id='yasrcsslightscheme-css'  href='https://wall.eduhack.eu/wp-content/plugins/yet-another-stars-rating/css/yasr-table-light.css' type='text/css' media='all' />
@@ -242,9 +258,9 @@ font-family: "Quicksand" !important;
 <li id="menu-item-64" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-64">
 	<a href="/search" style="padding-top: 10px;"><img src="{{url_for('static', filename='spyglass-d.png')}}" /></a>
 </li>
-<li><a href="/lang/en"><img src="https://eduhack.eu/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png"></a>
-<li><a href="/lang/it"><img src="https://eduhack.eu/wp-content/plugins/sitepress-multilingual-cms/res/flags/it.png"></a>
-<li><a href="/lang/es"><img src="https://eduhack.eu/wp-content/plugins/sitepress-multilingual-cms/res/flags/es.png"></a>
+<li class="lang"><a href="/lang/en"><img src="https://eduhack.eu/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png"></a>
+<li class="lang"><a href="/lang/it"><img src="https://eduhack.eu/wp-content/plugins/sitepress-multilingual-cms/res/flags/it.png"></a>
+<li class="lang"><a href="/lang/es"><img src="https://eduhack.eu/wp-content/plugins/sitepress-multilingual-cms/res/flags/es.png"></a>
 
 				 </ul>
 				
@@ -293,7 +309,13 @@ font-family: "Quicksand" !important;
 <li id="menu-item-64" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-64">
         <a href="/search" style="padding-top: 10px;"><img src="{{url_for('static', filename='spyglass-d.png')}}" /></a>
 </li>
-			 </ul>
+<li>
+	<ul style="display: inline-flex">
+		<li class="lang"><a href="/lang/en"><img src="https://eduhack.eu/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png"></a>
+		<li class="lang"><a href="/lang/it"><img src="https://eduhack.eu/wp-content/plugins/sitepress-multilingual-cms/res/flags/it.png"></a>
+		<li class="lang"><a href="/lang/es"><img src="https://eduhack.eu/wp-content/plugins/sitepress-multilingual-cms/res/flags/es.png"></a>
+	<ul>
+</ul>
 			 
 			 
 		</div> <!-- /mobile-menu-container -->
