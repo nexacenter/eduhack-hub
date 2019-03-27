@@ -5,7 +5,7 @@ import logging
 import os
 fuck = IPython.embed
 
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, session
 import flask
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required, UserMixin
 app = Flask(__name__)
@@ -387,6 +387,13 @@ def filter_uurl():
 
     return render_template('filter_url.html', error=error, success=success, urls=enumerate(urls), domains=enumerate(domains))
     
+@app.route('/lang/<string:lang>')
+def change_lang(lang):
+    if lang=='es' or lang=='it':
+        session['lang'] = lang
+    else:
+        session['lang'] = 'en'
+    return redirect(request.referrer)
 
 
 if __name__ == '__main__':

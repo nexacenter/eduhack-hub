@@ -19,7 +19,13 @@
 
         <h1 class="h1">Submit</h1>
 	<p class="lead">
+		{% if session['lang']=='es' %}
+                Hola
+        	{% elif session['lang']=='it' %}
+                Ciao
+        	{% else %}
 		If your blog is not part of the EduHack blogosphere, but you would like to share your posts, we can only aggregate your EduHack related content if you give access to your posts by filling in this form.
+        	{% endif %}
 	</p>
 </div>
 

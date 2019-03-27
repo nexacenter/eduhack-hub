@@ -8,7 +8,13 @@
 
         <h1 class="h1">Blogs</h1>
         <p class="lead">
+		{% if session['lang']=='es' %}
+                Hola
+        	{% elif session['lang']=='it' %}
+                Ciao
+        	{% else %}
 		Here is the growing list of blogs registered in the EduHack blogosphere.
+        	{% endif %}
         </p>
 </div>
 
