@@ -290,8 +290,9 @@ if __name__ == '__main__':
     count=1
     all = list()
     for b in get_blog_list():
+        logging.error('Starting  '+str(count)+': '+str(b))
         for post in get_posts(b):
             add_to_db(post)
-        logging.error('Completed '+str(count))
+        logging.error('Completed '+str(count)+': '+str(b))
         count=count+1
     logging.error('--- %s seconds ---' % (time.time()-start_time))
