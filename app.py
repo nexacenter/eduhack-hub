@@ -166,9 +166,10 @@ def get_tag_cat(tagid, ttype):
     Commond code for getting posts tagged with tags or categories
     '''
     session = Session()
-    tagq= 'select p.id, c.name cname, c.type type from  posthascategory pc, category c, post p where pc.cid = c.id and pc.pid = p.id and pc.type = "%s" and c.id = %s order by p.date desc;' % (ttype, tagid)
+    tagq= 'select p.id, c.name cname, c.type type from  posthascategory pc, category c, post p where pc.cid = c.id and pc.pid = p.id and c.type = "%s" and c.id = %s order by p.date desc;' % (ttype, tagid)
     # here get only posts id.
     # then gather every info needed from multiple queries
+    logger.error(tagq)
     posts = session.execute(tagq).fetchall()
     res = []
     for p in posts:
@@ -201,7 +202,7 @@ def get_tagged_postsc(tagid):
     Given a tag id return all the posts that are tagged with that tag.
     '''
     tagid = 0 if tagid < 0 else int(tagid)
-    return render_template('filtered_posts.html', posts=get_tag_cat(tagid, 'Category'), tagid=get_tag_name(tagid))
+    return render_template('filtered_posts.html', posts=get_tag_cat(tagid, 'Categories'), tagid=get_tag_name(tagid))
 
 @app.route('/category/<string:name>')
 def filter_by_category_name(name):
@@ -214,7 +215,7 @@ def filter_by_category_name(name):
         name = categorymap[name]
     result = session.query(Category).filter(func.lower(Category.name)==func.lower(name)).first()
     if result:
-        return redirect(request.url_root+'/categories/'+str(result.id))
+        return redirect(request.url_root+'categories/'+str(result.id))
     return render_template('search.html', posts=[], error='No post belonging to the selected category.', show_search=True)
 
 
@@ -230,13 +231,15 @@ def search(queries, target=70):
     for q in queries:
         for s in alltags:
             ratio = fuzz.ratio(s.name.lower(), q.lower())
-            logger.error(s.name+' - '+ str(q) + ': ' + str(ratio))
             if ratio > target:
                 tags.append((s.id, s.type, s.name, ratio))
-    logger.info(str(tags))
+                #logger.error('Type: '+s.type)
+                #logger.error(s.name+' - '+ str(q) + ': ' + str(ratio))
     for tag in sorted(tags, key=lambda t: t[-1], reverse=True):
+        logger.error(tag)
         iid, ttype, name, ratio = tag
         new = get_tag_cat(iid, ttype)
+        logger.error(str(new))
         for n in new:
             if n['title'] not in track_posts:
                 track_posts.add(n['title'])
