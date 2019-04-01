@@ -77,6 +77,177 @@ img.emoji {
 	.mobile-menu li.lang{
 		margin: 0px 0px 0px 20px;
 	}
+
+@media (max-width: 1080px) {
+	
+	/* header */
+	
+	.header { padding: 30px 0; }
+	
+	.blog-title { 
+		font-size: 32px;
+		margin-top: 5px;
+		margin-right: 105px;
+	}
+	
+	.blog-logo {
+		display: block; 
+		position: static;
+		left: inherit;
+		top: inherit;
+		float: left;
+		margin-top: 0;
+	}
+	
+	.blog-logo img {
+		height: 60px;
+		width: auto;
+	}
+
+	
+	/* nav-toggle */
+	
+	
+	.header .nav-toggle { 
+		display: block;
+		padding: 12px 12px 10px; 
+		border-radius: 3px;
+		position: absolute;
+		top: 50%;
+		margin-top: -16px;
+		right: 0;
+	}
+	
+	.header .nav-toggle .bars {
+		height: 10px;
+		width: 15px;
+		float: right;
+		position: relative;
+		margin-top: -1px;
+	}
+	
+	.header .nav-toggle .bar {
+		width: 15px;
+		height: 2px;
+		background: #767676;
+		border-radius: 2px;
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
+	
+	.header .nav-toggle .bar:nth-child(2) { top: 4px; }
+	.header .nav-toggle .bar:nth-child(3) { top: 8px; }
+	
+	.header .nav-toggle p {
+		font-size: 14px;
+		line-height: 10px;
+		font-weight: 700;
+		text-transform: uppercase;
+		text-align: right;
+		color: #767676;
+		float: left;
+		margin-right: 8px;
+		position: relative;
+		top: -1px;
+	}
+	
+	.header .nav-toggle .close { display: none; }
+	
+	.header .nav-toggle:hover { cursor: pointer; }
+	
+	.header .nav-toggle.active { background: #019EBD; } 
+	.header .nav-toggle.active p { color: #fff; } 
+	
+	.header .nav-toggle.active .bar { background: #fff; }
+	
+	.header .nav-toggle.active .bar:nth-child(1),
+	.header .nav-toggle.active .bar:nth-child(3) { top: 4px; }
+	
+	.header .nav-toggle.active .bar:nth-child(2) { opacity: 0; }
+	
+	.header .nav-toggle.active .bar:nth-child(1) {
+		transform: rotate(45deg); 
+	}
+	
+	.header .nav-toggle.active .bar:nth-child(3) { 
+		transform: rotate(-45deg); 
+	}
+
+
+	/* mobile menu */
+	
+	
+	.main-menu { display: none; }
+	
+	.mobile-menu { background: #EEE; }
+	
+	.mobile-menu a {
+		display: block;
+		padding: 25px 8%;
+		font-weight: 600;
+		color: #666;
+	}
+	
+	.mobile-menu a:hover { 
+		background: #CA2017; 
+		color: #fff;
+	}
+	
+	.mobile-menu ul a { padding-left: 12%; }
+	.mobile-menu ul ul a { padding-left: 16%; }
+	.mobile-menu ul ul ul a { padding-left: 20%; }
+	.mobile-menu ul ul ul ul a { padding-left: 24%; }
+	.mobile-menu ul ul ul ul ul a { padding-left: 28%; }
+	
+	/* mobile search form */
+	
+	.mobile-search-form {
+		background: #eee;
+		border-top: 1px solid #ddd;
+		position: relative;
+	}
+	
+	.mobile-search-form #s {
+		display: block;
+		width: 100%;
+		max-width: 84%;
+		margin: 0 auto;
+		background: none;
+		border: none;
+		padding: 25px 60px 25px 0;
+		font-family: 'Open Sans', sans-serif;
+		font-size: 1em;
+		font-weight: 400;
+		color: #666;
+	}
+	
+	.mobile-search-form #s:focus { outline: none; }
+	
+	.mobile-search-form .search-button {
+		width: 40px;
+		height: 40px;
+		background: url(images/icons/1x/spyglass-d.png) no-repeat center;
+		background-size: 20px auto;
+		position: absolute;
+		right: 8%;
+		top: 50%;
+		margin-top: -20px;
+		-webkit-appearance: none;
+		padding: 0;
+		border: none;
+		text-indent: -9999px;
+		opacity: 0.5;
+	}	
+	
+	.mobile-search-form .search-button:hover {
+		cursor: pointer;
+		opacity: 1;
+	}
+
+	
+}	
+
 </style>
 <link rel='stylesheet' id='dashicons-css'  href='https://wall.eduhack.eu/wp-includes/css/dashicons.min.css?ver=5.0.3' type='text/css' media='all' />
 <link rel='stylesheet' id='yasrcsslightscheme-css'  href='https://wall.eduhack.eu/wp-content/plugins/yet-another-stars-rating/css/yasr-table-light.css' type='text/css' media='all' />

@@ -211,7 +211,7 @@ def filter_by_category_name(name):
     return render_template('search.html', posts=[], error='No post belonging to the selected category.', show_search=True)
 
 
-def search(queries, target=30):
+def search(queries, target=70):
     from sqlalchemy import func
     from fuzzywuzzy import fuzz
     posts = []
@@ -222,7 +222,8 @@ def search(queries, target=30):
     tags = list() # the tags that match
     for q in queries:
         for s in alltags:
-            ratio = fuzz.ratio(s.name, q)
+            ratio = fuzz.ratio(s.name.lower(), q.lower())
+            logger.error(s.name+' - '+ str(q) + ': ' + str(ratio))
             if ratio > target:
                 tags.append((s.id, s.type, s.name, ratio))
     logger.info(str(tags))
