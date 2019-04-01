@@ -11,6 +11,8 @@ from flask_login import LoginManager, login_user, logout_user, current_user, log
 app = Flask(__name__)
 app.secret_key = CONFIG.secret
 
+categorymap = {key.lower():value for key, value in categorymap.items()}
+
 logger=logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -205,6 +207,11 @@ def get_tagged_postsc(tagid):
 def filter_by_category_name(name):
     session = Session()
     name = name.replace('_', ' ')
+    logger.error(name)
+    logger.error(categorymap)
+
+    if name in categorymap:
+        name = categorymap[name]
     result = session.query(Category).filter(func.lower(Category.name)==func.lower(name)).first()
     if result:
         return redirect(request.url_root+'/categories/'+str(result.id))
