@@ -82,9 +82,14 @@ def index_page(index):
     results = session.execute(query).fetchall()
     results_for_page = results[min:min+11]
     posts = [make_post(p, session) for p in results_for_page] # could have been done using sql, don't care
+    
+    if len(posts)>10:
+        next=True
+    else:
+        next=False
     if not posts and request.url not in request.url_root:
         return redirect(request.url_root)
-    return render_template('index.html', posts=posts, index=index)
+    return render_template('index.html', posts=posts[:10], index=index, next=next)
 
 @app.route('/')
 def index():

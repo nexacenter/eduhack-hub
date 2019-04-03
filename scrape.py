@@ -11,6 +11,8 @@ import datetime
 import IPython
 fuck = IPython.embed
 
+blacklisted_categories = ['Published', 'Language', 'Partners', 'People']
+
 #logger=logging.getLogger(__name__)
 #logger.setLevel(logging.INFO)
 
@@ -112,15 +114,17 @@ def fill_tags(post, tags, key='tags'):
     for tid in post[key]:
         if tid in tags:
             #logger.info('Cat: '+tags[tid]+'\n')
-            tagnames.append(tags[tid]) # fill with tag names
+            if tags[tid] not in blacklisted_categories:
+                tagnames.append(tags[tid]) # fill with tag names
         else:
             logging.error(' '.join(['no', str(tid), 'for', post['link']]))
-    if '/polito.' in post['link']:
-        tagnames.append('PoliTo EduHackathon')
-    elif '/coventry.' in post['link']:
-        tagnames.append('Coventry EduHackathon')
-    elif '/unir.' in post['link']:
-        tagnames.append('UNIR EduHackathon')
+    if key == 'categories':
+        if '/polito.' in post['link']:
+            tagnames.append('PoliTo EduHackathon')
+        elif '/coventry.' in post['link']:
+            tagnames.append('Coventry EduHackathon')
+        elif '/unir.' in post['link']:
+            tagnames.append('UNIR EduHackathon')
     
     return sorted(tagnames)
 
