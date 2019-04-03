@@ -341,6 +341,7 @@ def remove_title():
                 error = 'Invalid title'
             else:
                 posthascategory = session.query(PostHasCategory).filter(PostHasCategory.pid == post.id).delete()
+                author = session.query(Author).filter(Author.id == post.authorid).delete()
                 session.delete(post)
                 session.commit()
                 success = 'Post removed.'
