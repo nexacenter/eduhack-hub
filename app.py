@@ -11,8 +11,6 @@ from flask_login import LoginManager, login_user, logout_user, current_user, log
 app = Flask(__name__)
 app.secret_key = CONFIG.secret
 
-categorymap = {key.lower():value for key, value in categorymap.items()}
-
 logger=logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 

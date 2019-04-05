@@ -97,8 +97,8 @@ def get_cat(url):
     d = json.loads(jposts)
     res = {}
     for cat in d:
-       if cat['name'] in categorymap:
-           res[cat['id']] = categorymap[cat['name']]
+       if cat['name'].lower() in categorymap:
+           res[cat['id']] = categorymap[cat['name'].lower()]
        else:
            res[cat['id']] = cat['name']
     if 'Uncategorized' in res:

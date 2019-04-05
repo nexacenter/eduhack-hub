@@ -91,15 +91,16 @@ categorymap = {
     "A4.4 Check technical accessibility of platforms and resources":"Activity 4.4 - Check technical accessibility of platforms and resources",
     "Area 1":"Area 1 - Digital Resources",
     "Area 2":"Area 2 - Teaching",
-    "Area 3":"Area 3: Assessment",
-    "Area 4":"Area 4: Empowering Learners",
+    "Area 3":"Area 3 - Assessment",
+    "Area 4":"Area 4 - Empowering Learners",
     "Digital Resources":"Area 1 - Digital Resources",
     "Teaching":"Area 2 - Teaching",
-    "Assessment":"Area 3: Assessment",
-    "Empowering students":"Area 4: Empowering Learners",
+    "Assessment":"Area 3 - Assessment",
+    "Empowering students":"Area 4 - Empowering Learners",
     "A1 Digital Resources":"Area 1 - Digital Resources",
     "A2 Teaching":"Area 2 - Teaching",
-    "A3 Assessment":"Area 3: Assessment",
-    "A4 Empowering Learners":"Area 4: Empowering Learners"
+    "A3 Assessment":"Area 3 - Assessment",
+    "A4 Empowering Learners":"Area 4 - Empowering Learners"
 }
 
+categorymap = {key.lower():value for key, value in categorymap.items()}
