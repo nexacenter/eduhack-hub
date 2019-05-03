@@ -133,8 +133,6 @@ def get_posts(url):
     if 'http' != url[:4]:
         url = 'https://' + url
 
-    api = '/wp-json/wp/v2/posts?per_page=100'
-
     try:
         tags = get_tags(url)
         categories = get_cat(url)
@@ -146,23 +144,29 @@ def get_posts(url):
 
     if author is None:
         raise StopIteration
-    jposts = requests.get(url+api).text
+    i=1
+    endpoint = '/wp-json/wp/v2/posts?per_page=100&page='
+    jposts = requests.get(url+endpoint+str(i)).text
+
     restPosts = json.loads(jposts)
     schema = ['link', 'title', 'jetpack_featured_media_url']
     posts = list()
-    for p in restPosts:
-       res = {}
-       for key in schema:
-           res[key] = p[key]
-       res['title'] = res['title']['rendered']
-       res['author'] = author
-       res['blogurl'] = url
-       res['tags'] = fill_tags(p, tags)
-       res['categories'] = fill_tags(p, categories, 'categories')
-       res['date'] = dateparser.parse(p['date'])
-       yield(res)
-       #posts.append(res)
-    #return posts
+
+    while restPosts and 'code' not in restPosts:
+       for p in restPosts:
+          res = {}
+          for key in schema:
+              res[key] = p[key]
+          res['title'] = res['title']['rendered']
+          res['author'] = author
+          res['blogurl'] = url
+          res['tags'] = fill_tags(p, tags)
+          res['categories'] = fill_tags(p, categories, 'categories')
+          res['date'] = dateparser.parse(p['date'])
+          yield(res)
+       i=i+1
+       jposts = requests.get(url+endpoint+str(i)).text
+       restPosts = json.loads(jposts)
             
 def add_author_todb(name, link, session=None):
     author = session.query(Author).filter(Author.name == name).first()
