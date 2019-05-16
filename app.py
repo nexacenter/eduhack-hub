@@ -216,7 +216,7 @@ def filter_by_category_name(name):
 
     if name in categorymap:
         name = categorymap[name]
-    result = session.query(Category).filter(func.lower(Category.name)==func.lower(name)).first()
+    result = session.query(Category).filter(func.lower(Category.name)==func.lower(name)).filter(Category.type == 'Categories').first()
     if result:
         return redirect(request.url_root+'categories/'+str(result.id))
     return render_template('search.html', posts=[], error='No post belonging to the selected category.', show_search=True)

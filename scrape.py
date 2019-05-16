@@ -189,7 +189,7 @@ def add_post_todb(p, author, session=None):
 
 def add_category_todb(cat, session=None, type=None):
     assert type is not None
-    category = session.query(Category).filter(Category.name == cat).first()
+    category = session.query(Category).filter(Category.name == cat).filter(Category.type == type).first()
     if category:
        return category
     c = Category(name=cat, type=type)
