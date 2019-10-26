@@ -60,10 +60,16 @@ def get_username(url):
     jposts = requests.get(url+endpoint).text
     d = json.loads(jposts)
     if not d:
-        logging.error(url + ' has no posts')
-        return None
+        if '/wall-es.' in url:
+            name = 'EduHack Wall ES'
+        if '/wall-en.' in url:
+            name = 'EduHack Wall EN'
+        if '/wall-it.' in url:
+            name = 'EduHack Wall IT'
+    #    logging.error(url + ' has no posts')
+    #    return None
 
-    if '/wall.' in d[0]['link']:
+    elif '/wall.' in d[0]['link']:
         name = 'EduHack Wall'
     elif '/polito.' in d[0]['link']:
         name = 'PoliTo EduHackathon'

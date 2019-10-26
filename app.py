@@ -74,20 +74,21 @@ def admin():
 @app.route('/<int:index>')
 def index_page(index): 
     index = int(index) if index >= 0 else 0 # shitty sql inj avoidance
-    min = index*10
+    ppp = 100 # posts per page
+    min = index*ppp
     session = Session()
     query = 'select *, author.link blogurl from author, post  where post.authorid = author.id order by post.date DESC;'
     results = session.execute(query).fetchall()
-    results_for_page = results[min:min+11]
+    results_for_page = results[min:min+ppp+1]
     posts = [make_post(p, session) for p in results_for_page] # could have been done using sql, don't care
     
-    if len(posts)>10:
+    if len(posts)>ppp:
         next=True
     else:
         next=False
     if not posts and request.url not in request.url_root:
         return redirect(request.url_root)
-    return render_template('index.html', posts=posts[:10], index=index, next=next)
+    return render_template('index.html', posts=posts[:ppp], index=index, next=next)
 
 @app.route('/')
 def index():
