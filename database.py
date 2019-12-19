@@ -97,6 +97,7 @@ categorymap = {
     "Teaching":"Area 2 - Teaching",
     "Assessment":"Area 3 - Assessment",
     "Empowering students":"Area 4 - Empowering Learners",
+    "Empowering Learners":"Area 4 - Empowering Learners",
     "A1 Digital Resources":"Area 1 - Digital Resources",
     "A2 Teaching":"Area 2 - Teaching",
     "A3 Assessment":"Area 3 - Assessment",
