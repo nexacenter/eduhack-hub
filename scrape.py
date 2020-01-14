@@ -64,8 +64,6 @@ def get_username(url):
             name = 'EduHack Wall ES'
         if '/wall-en.' in url:
             name = 'EduHack Wall EN'
-        if '/wall-it.' in url:
-            name = 'EduHack Wall IT'
     #    logging.error(url + ' has no posts')
     #    return None
 
@@ -77,6 +75,8 @@ def get_username(url):
         name = 'Coventry EduHackathon'
     elif '/unir.' in d[0]['link']:
         name = 'UNIR EduHackathon'
+    elif '/wall-it.' in d[0]['link']:
+        name = 'EduHack Wall IT'
     else:
         name = d[0]['name']
     # del d[0] # when taking the user from the wall remove the first one (admin) and return the second
