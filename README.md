@@ -119,13 +119,18 @@ WantedBy=multi-user.target
 ```
 
 ### Scraper / cron
-Lo scraper va eseguito secondo un intervallo di tempo (esempio 30 minuti).
-``` cron
-0,30 * * * * python3 /path/scrape.py > /logpath/scrape.log 2>&1
-```
-In alternative si puo` usare systemd con un timer:
 
-`https://unix.stackexchange.com/questions/198444/run-script-every-30-min-with-systemd`
+Lo scraper va eseguito secondo un intervallo di tempo (esempio ogni ora).
+``` cron
+0 0 * * * * python3 /path/scrape.py > /logpath/scrape.log 2>&1
+```
+
+Per rigenerare il database partendo da zero alle cinque minuti prima della mezzanotte si può usare questo cron job
+
+```
+55 23 * * * cd /path/to/database/dir && sqlite3 edu.db "delete from author; delete from post; delete from category; delete from posthascategory;" > delete_db.log 2>&1
+```
+
 
 # File di configurazione
 
