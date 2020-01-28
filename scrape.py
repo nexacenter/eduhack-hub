@@ -7,6 +7,7 @@ from database import *
 import config as CONFIG
 from dateutil import parser as dateparser
 import datetime
+import time
 
 import IPython
 fuck = IPython.embed
@@ -85,7 +86,7 @@ def get_username(url):
     
 def get_tags(url):
     i=1
-    endpoint = '/wp-json/wp/v2/tags?per_page=100&page='
+    endpoint = '/wp-json/wp/v2/tags?per_page=10&page='
     jposts = requests.get(url+endpoint+str(i)).text
     d = json.loads(jposts)
     res = {}
@@ -93,6 +94,7 @@ def get_tags(url):
         for tag in d:
            res[tag['id']] = tag['name']
         i=i+1
+        time.sleep(3) # wait three seconds every 10 tags
         jposts=requests.get(url+endpoint+str(i)).text
         d=json.loads(jposts)
     return res
@@ -151,7 +153,7 @@ def get_posts(url):
     if author is None:
         raise StopIteration
     i=1
-    endpoint = '/wp-json/wp/v2/posts?per_page=100&page='
+    endpoint = '/wp-json/wp/v2/posts?per_page=10&page='
     jposts = requests.get(url+endpoint+str(i)).text
 
     restPosts = json.loads(jposts)
@@ -171,6 +173,7 @@ def get_posts(url):
           res['date'] = dateparser.parse(p['date'])
           yield(res)
        i=i+1
+       time.sleep(3) # wait three seconds every 10 posts
        jposts = requests.get(url+endpoint+str(i)).text
        restPosts = json.loads(jposts)
             
