@@ -78,10 +78,13 @@ def get_username(url):
         name = 'UNIR EduHackathon'
     elif '/wall-it.' in d[0]['link']:
         name = 'EduHack Wall IT'
+    elif '/wall-en.' in d[0]['link']:
+        name = 'EduHack Wall EN'
+    elif '/wall-es.' in d[0]['link']:
+        name = 'EduHack Wall ES'
     else:
         name = d[0]['name']
     # del d[0] # when taking the user from the wall remove the first one (admin) and return the second
-
     return name
     
 def get_tags(url):
