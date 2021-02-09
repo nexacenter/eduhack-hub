@@ -164,14 +164,26 @@ def get_posts(url):
     jposts = requests.get(url+endpoint+str(i)).text
 
     restPosts = json.loads(jposts)
-    schema = ['link', 'title', 'jetpack_featured_media_url']
+#    schema = ['link', 'title', 'jetpack_featured_media_url']
+    schema = ['link', 'title', '_links']
     posts = list()
 
     while restPosts and 'code' not in restPosts:
        for p in restPosts:
+#          logging.error(p)
           res = {}
           for key in schema:
-              res[key] = p[key]
+                if key == '_links':
+                   try:
+                      img_res = requests.get(p[key]['wp:featuredmedia'][0]['href']).text
+                      img_json = json.loads(img_res)
+                      img_url = img_json['guid']['rendered']
+                      res['jetpack_featured_media_url'] = img_url
+                   except Exception as exc:
+                      res['jetpack_featured_media_url'] = ''
+                else:
+                   res[key] = p[key]
+
           res['title'] = res['title']['rendered']
           res['author'] = author
           res['blogurl'] = url
@@ -200,6 +212,7 @@ def add_post_todb(p, author, session=None):
     assert type(p['date']) is datetime.datetime, type(p['date'])
     post = Post(title = p['title'], link=p['link'],
                         date=p['date'], thumb=p['jetpack_featured_media_url'], author=author)
+#                         date=p['date'], thumb="", author=author)
     session.add(post)
     return post
 
