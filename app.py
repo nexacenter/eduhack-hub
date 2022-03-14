@@ -3,6 +3,7 @@ import config as CONFIG
 import IPython
 import logging
 import os
+import validators
 fuck = IPython.embed
 
 from flask import Flask, render_template, request, url_for, redirect, session
@@ -104,6 +105,8 @@ def validate(form):
    error = ''
    if form['link'] == '' and len(form['link']) < 5 and not 'http' in form['link'][:4]:
        error = 'Insert a valid link for your post'
+   if not validators.url(form['link']) or not validators.url(form['blogurl']) or not validators.url(form['thumb']):
+       error = 'Please insert a valid link'
    if form['thumb'] == '' and len(form['thumb']) < 5 and not is_valid_img(form['thumb']):
       error = 'please insert a valid image for your blogpost'
    if form['title'] == '': 
